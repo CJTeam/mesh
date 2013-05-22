@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+    <head>
+        <meta charset="utf-8">
+        <title>Descry | {% block page_title %}Home{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
+        <link href="{{ STATIC_URL }}css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link href="{{ STATIC_URL }}css/base.css" rel="stylesheet">
+        <!--[if lt IE 9]>
+        <script src="{{ STATIC_URL }}js/html5shiv.js"></script>
+        <![endif]-->
+        <link rel="shortcut icon" href="{{ STATIC_URL }}img/ico/favicon.ico">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ STATIC_URL }}img/ico/favicon.ico">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ STATIC_URL }}img/ico/favicon.ico">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ STATIC_URL }}img/ico/favicon.ico">
+        <link rel="apple-touch-icon-precomposed" href="{{ STATIC_URL }}img/ico/favicon.ico">
+        {% block link %}{% endblock %}
+        {% block script %}{% endblock %}
+    </head>
+    <body class="{% block body_class %}{% endblock %}">
+        <h1>Descry</h1>
+        {% block  body_content %}{% endblock %}
+        <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/jquery-1.9.1.min.js"><\/script>')</script>
+            <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+{% block extra_script %}{% endblock %}
+    </body>
+</html>
