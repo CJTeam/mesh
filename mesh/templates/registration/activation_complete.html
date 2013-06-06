@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block page_title %}Activation complete{% endblock %}
+
+{% block body_content %}
+
+    <h3>Congratulations!</h3>
+    <p>Your registration is now complete. You will be forwarded to the <a href="{% url 'auth_login' %}">login</a> page in <span id="redirect-countdown">5</span> seconds.</p>
+
+{% endblock %}
+
+{% block extra_script %}
+    <script type="application/javascript">
+
+        var REDIRECT_DELAY = 5; // seconds
+        var redirectCtr = 0;
+
+        function countdown () {
+            redirectCtr += 1;
+            console.log(redirectCtr);
+            $('#redirect-countdown').text(REDIRECT_DELAY - redirectCtr);
+            if (redirectCtr == REDIRECT_DELAY) {
+                window.location = "{% url 'auth_login' %}";
+            }
+            else {
+                setTimeout(countdown, 1000);
+            }
+        }
+
+        setTimeout(countdown, 1000);
+    </script>
+{% endblock %}

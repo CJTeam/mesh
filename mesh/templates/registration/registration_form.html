@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block page_title %}Join{% endblock %}
+
+{% block body_content %}
+
+    <form method="post" action="" class="wide form-horizontal">
+          {% csrf_token %}
+          <fieldset>
+              <legend>Register an Account</legend>
+              {% for field in form %}
+                  {% if field.errors %}
+                      <div class="control-group error">
+                          <label for="{{ field.id_for_label }}" class="control-label">{{ field.label }}</label>
+                          <div class="controls">
+                              {{ field }}
+                              <span class="help-block">{{ field.errors|first|escape }}</span>
+                          </div>
+                      </div>
+                  {% else %}
+                      <div class="control-group">
+                          <label for="{{ field.id_for_label }}" class="control-label">{{ field.label }}</label>
+                          <div class="controls">
+                              {{ field }}
+                          </div>
+                      </div>
+                  {% endif %}
+              {% endfor %}
+              <div class="control-group">
+                  <div class="controls">
+                      <button type="submit" class="btn btn-info" style="float:none">Continue</button>
+                  </div>
+              </div>
+          </fieldset>
+    </form>
+
+{% endblock %}
