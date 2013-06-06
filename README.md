@@ -1,4 +1,4 @@
-descry
+mesh
 ======
 
-Descry (to discover, or catch sight of) is a placeholder codename for our CitizenJ project, an open source, collaborative, human-powered data collection, aggregation and analysis tool.
+Mesh is an online configurable interface that opens access to sophisticated software for the exploration,visualisation and analysis of networks of influence at both global and local scales.
