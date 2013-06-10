@@ -21,8 +21,10 @@
     <body class="{% block body_class %}{% endblock %}">
         <div class="container">
             <br/>
-            <div class="row">
-                {% include "navbar.html" %}
+            <div class="row-fluid">
+                <div class="hero-unit" onclick="window.location = '{% url 'home' %}';" style="cursor: pointer">
+                    MESH BANNER
+                </div>
             </div>
             {% block  body_content %}{% endblock %}
         </div>
