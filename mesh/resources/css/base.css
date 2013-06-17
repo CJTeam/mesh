@@ -1,3 +1,62 @@
-.btn {
-    width: 150px;
+/* Main logo */
+.logo {
+    background-image: url(../img/logo.jpg);
+    font-family: "Courier New";
+    position: relative;
+    text-transform: lowercase;
+}
+.logo .logo-name {
+    color: white;
+    float:right;
+    font-size: 28px;
+    right: 30%;
+    bottom: 40px;
+    position: absolute;
+}
+.logo .logo-page-title {
+    font-size: 30px;
+    font-weight: bold;
+    opacity: 0.7;
+}
+
+/* Forms */
+form .required .controls:after {
+    color: #e32;
+    content: '*';
+    display:inline;
+}
+
+/* Projects */
+.project-box {
+    background-color: #A3B6A3;
+    cursor: pointer;
+    height: 150px !important;
+    opacity: 0.8;
+}
+.project-box-collaborator {
+    background-color: #73A0B8;
+}
+.project-box:hover {
+    opacity: 1;
+}
+.project-box .project-name {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+.project-box .project-description {
+    padding-left: 20px;
+}
+
+.button-link {
+    font-size: 1.8em;
+    font-weight: bold;
+}
+.button-link:hover {
+    text-decoration: none;
+}
+
+form.disabled input {
+    cursor: not-allowed;
+    background-color: #EEE;
+    color: #9E9999;
 }

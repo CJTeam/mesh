@@ -2,7 +2,7 @@
 <html lang="{{ LANGUAGE_CODE }}">
     <head>
         <meta charset="utf-8">
-        <title>Mesh | {% block page_title %}Home{% endblock %}</title>
+        <title>Mesh</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
         <link href="{{ STATIC_URL }}css/bootstrap-responsive.min.css" rel="stylesheet">
@@ -22,10 +22,22 @@
         <div class="container">
             <br/>
             <div class="row-fluid">
-                <div class="hero-unit" onclick="window.location = '{% url 'home' %}';" style="cursor: pointer">
-                    MESH BANNER
+                <div class="hero-unit logo" onclick="window.location = '{% url 'home' %}';" style="cursor: pointer">
+                    <span class="logo-page-title">{% block page_title %}Home{% endblock %}</span>
+                    <div class="logo-name">Mesh</div>
                 </div>
             </div>
+
+            {% if user.is_authenticated %}
+            {% include 'navbar.html' %}
+            {% endif %}
+
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
+            {% endif %}
+
             {% block  body_content %}{% endblock %}
         </div>
         <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/jquery-1.9.1.min.js"><\/script>')</script>

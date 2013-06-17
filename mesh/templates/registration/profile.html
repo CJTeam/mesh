@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% block page_title %}Register{% endblock %}
+{% block page_title %}Profile{% endblock %}
 
 {% block body_content %}
 
-    <form method="post" action="" class="wide form-horizontal">
+    <form method="post" class="wide form-horizontal">
           {% csrf_token %}
           <fieldset>
-              <legend>Register an Account</legend>
+              <legend>Update your details</legend>
               {% for field in form %}
                   {% if field.errors %}
                       <div class="control-group error">
@@ -27,7 +27,8 @@
               {% endfor %}
               <div class="control-group">
                   <div class="controls">
-                      <button type="submit" class="btn btn-info" style="float:none">Continue</button>
+                        <button type="button" onclick="window.location = '{% url 'home' %}';" class="btn">Cancel</button>
+                        <button type="submit" class="btn btn-info">Continue</button>
                   </div>
               </div>
           </fieldset>
