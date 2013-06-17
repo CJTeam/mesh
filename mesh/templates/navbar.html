@@ -3,13 +3,13 @@
         <ul class="nav">
             <li><a href="{% url 'home' %}">Home</a></li>
             <li class="divider-vertical"></li>
-            <li><a href="#">New Project</a></li>
+            <li><a href="{% url 'project_create' %}">New Project</a></li>
             <li class="divider-vertical"></li>
-            <li><a href="#">Profile</a></li>
+            <li><a href="{% url 'profile' %}">Profile</a></li>
         </ul>
         <div class="pull-right">
             <ul class="nav">
-                <li class="navbar-text"> Welcome, {{ user.username }}</li>
+                <li class="navbar-text"> Welcome, {{ user.first_name }}</li>
                 <li class="divider-vertical"></li>
                 <li><a href="{% url 'auth_logout' %}">Logout</a></li>
             </ul>
