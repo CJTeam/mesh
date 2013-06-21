@@ -32,8 +32,7 @@ form .required .controls:after {
 .project-box {
     background-color: #A3B6A3;
     cursor: pointer;
-    height: auto !important;
-    min-height: 150px !important;
+    height: 200px !important;
     opacity: 0.8;
 }
 .project-box-collaborator {
@@ -56,6 +55,12 @@ form .required .controls:after {
 }
 .button-link:hover {
     text-decoration: none;
+}
+.button-link-red {
+    color: #FF0000;
+}
+.button-link-red:hover {
+    color: #BB0000;
 }
 
 form.disabled input {

@@ -23,20 +23,6 @@ class ProjectForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'': ''}),
         }
 
-    class CollaboratorsField(forms.ModelMultipleChoiceField):
-        def label_from_instance(self, user):
-            return '{} {}'.format(user.first_name, user.last_name)
-
-    def __init__(self, user, *args, **kwargs):
-
-        if 'instance' in kwargs:
-            initial = kwargs.setdefault('initial', {})
-            initial['collaborators'] = [t.pk for t in kwargs['instance'].collaborators.all()]
-
-        forms.ModelForm.__init__(self, *args, **kwargs)
-
-        self.fields['collaborators'] = ProjectForm.CollaboratorsField(required=False,queryset=User.objects.exclude(username=user.username).exclude(is_superuser=True))
-
 
 class UserRegistrationForm(RegistrationForm):
     first_name = forms.CharField()

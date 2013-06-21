@@ -56,6 +56,26 @@
         </div>
         <div class="span6">
             {% if project %}
+                {% if project.owner == user %}
+                <a class="button-link button-link-red confirm-delete" href="#">Deactivate Project ></a>
+                <div id="modal-from-dom" class="modal hide fade">
+                    <div class="modal-header">
+                      <h3>Deactivate Project</h3>
+                    </div>
+                    <div class="modal-body">
+                      <p>You are about to deactivate the project '{{ project.name }}'. Afterwards, the project will no longer be accessible.</p>
+                      <p>Do you want to proceed?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <form action="{% url 'deactivate_project' project.id %}" method="POST">
+                            {% csrf_token %}
+                            <a href="javascript:$('#modal-from-dom').modal('hide')" class="btn secondary">No</a>
+                            <input type="submit" class="btn btn-danger" value="Yes"/>
+                        </form>
+                    </div>
+                </div>
+                <br/><br/>
+                {% endif %}
                 <a class="button-link" href="{% url 'edit_data' project.id %}">Edit Data ></a>
             {% endif %}
         </div>
@@ -65,4 +85,12 @@
 
 
 {% block extra_script %}
+<script type="application/javascript">
+    $('.confirm-delete').click(function(e) {
+        e.preventDefault();
+
+        var id = $(this).data('id');
+        $('#modal-from-dom').data('id', id).modal('show');
+    });
+</script>
 {% endblock %}
