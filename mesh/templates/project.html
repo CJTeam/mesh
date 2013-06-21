@@ -67,7 +67,7 @@
                       <p>Do you want to proceed?</p>
                     </div>
                     <div class="modal-footer">
-                        <form action="{% url 'deactivate_project' project.id %}" method="POST">
+                        <form action="{% url 'deactivate_project' project.id %}" method="POST" style="margin:0">
                             {% csrf_token %}
                             <a href="javascript:$('#modal-from-dom').modal('hide')" class="btn secondary">No</a>
                             <input type="submit" class="btn btn-danger" value="Yes"/>
