@@ -76,6 +76,31 @@ class ProfileView(UpdateView):
         return reverse('home')
 
 
+class ProjectCollaboratorsView(TemplateView):
+    """
+    View and update collaborators for a project.
+
+    """
+    template_name = 'collaborators.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ProjectCollaboratorsView, self).get_context_data(**kwargs)
+        context['project'] = project = Project.objects.get(id=kwargs['project_id'])
+        context['users'] = User.objects.filter(is_superuser=False).filter(is_active=True).exclude(id=project.owner.id)
+        return context
+
+    def post(self, request, project_id):
+        # Update collaborators list
+        project = Project.objects.get(id=project_id)
+        project.collaborators.clear()
+        for user_id in request.POST.getlist('collaborators'):
+            user = User.objects.get(id=user_id)
+            project.collaborators.add(user)
+        project.save()
+        messages.info(self.request, 'Collaborators for project {} updated'.format(project.name))
+        return redirect('project_update', project_id)
+
+
 class ProjectCreateView(FormView):
     """
     Create a new project.
