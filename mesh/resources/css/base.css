@@ -5,18 +5,20 @@
     position: relative;
     text-transform: lowercase;
 }
-.logo .logo-name {
+.logo a.logo-name {
     color: white;
-    float:right;
-    font-size: 28px;
-    right: 30%;
+    float: right;
+    font-size: 35px;
+    right: 20%;
     bottom: 40px;
     position: absolute;
 }
+.logo a.logo-name:hover {
+    text-decoration: none;
+}
 .logo .logo-page-title {
-    font-size: 30px;
-    font-weight: bold;
-    opacity: 0.7;
+    font-size: 65px;
+    opacity: 0.6;
 }
 
 /* Forms */
@@ -30,7 +32,8 @@ form .required .controls:after {
 .project-box {
     background-color: #A3B6A3;
     cursor: pointer;
-    height: 150px !important;
+    height: auto !important;
+    min-height: 150px !important;
     opacity: 0.8;
 }
 .project-box-collaborator {

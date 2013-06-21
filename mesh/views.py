@@ -65,19 +65,14 @@ class ProjectCreateView(FormView):
 
     def form_valid(self, form):
 
-        """if 'project_id' in self.request.POST.keys():
-            print 111
-            project = Project.objects.get(id=self.request.POST['project_id'])
-            if project.owner <> self.request.user:
-                raise PermissionDenied()
-            message = 'Project {} updated'"""
-
         project = Project()
         project.owner = self.request.user
 
         data = form.cleaned_data
         project.name=data['name']
         project.description=data['description']
+        project.node_description = data['node_description']
+        project.edge_description = data['edge_description']
         project.save()
         project.collaborators.clear()
         for user in data['collaborators']:
@@ -117,6 +112,8 @@ class ProjectUpdateView(FormView):
             data = form.cleaned_data
             project.name=data['name']
             project.description=data['description']
+            project.node_description = data['node_description']
+            project.edge_description = data['edge_description']
             project.collaborators.clear()
             for user in data['collaborators']:
                 project.collaborators.add(user)

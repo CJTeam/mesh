@@ -13,7 +13,10 @@ class ProjectForm(forms.ModelForm):
 
     class Meta:
         model = Project
-        fields = ['name', 'description']
+        fields = ['name', 'description', 'node_description', 'edge_description']
+        widgets = {
+            'description': forms.Textarea(attrs={'': ''}),
+        }
 
     class CollaboratorsField(forms.ModelMultipleChoiceField):
         def label_from_instance(self, user):
@@ -27,7 +30,7 @@ class ProjectForm(forms.ModelForm):
 
         forms.ModelForm.__init__(self, *args, **kwargs)
 
-        self.fields['collaborators'] = ProjectForm.CollaboratorsField(queryset=User.objects.exclude(username=user.username).exclude(is_superuser=True))
+        self.fields['collaborators'] = ProjectForm.CollaboratorsField(required=False,queryset=User.objects.exclude(username=user.username).exclude(is_superuser=True))
 
 
 class UserRegistrationForm(RegistrationForm):

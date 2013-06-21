@@ -38,6 +38,7 @@
                         {% endif %}
                     {% endfor %}
                     <span class="help-block"><a href="{% url 'django.contrib.auth.views.password_reset' %}">Forgot your password?</a> or <a href="{% url 'registration_register' %}">Need to register?</a></span>
+                    <button type="button" onclick="window.location = '{% url 'home' %}';" class="btn">Cancel</button>
                     <button type="submit" class="btn btn-info" style="float:none">Continue</button>
                 </fieldset>
             </form>

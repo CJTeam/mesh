@@ -22,9 +22,9 @@
         <div class="container">
             <br/>
             <div class="row-fluid">
-                <div class="hero-unit logo" onclick="window.location = '{% url 'home' %}';" style="cursor: pointer">
+                <div class="hero-unit logo">
                     <span class="logo-page-title">{% block page_title %}Home{% endblock %}</span>
-                    <div class="logo-name">Mesh</div>
+                    <div ><a class="logo-name" href="{% url 'home' %}">Mesh</a></div>
                 </div>
             </div>
 
@@ -34,7 +34,10 @@
 
             {% if messages %}
             {% for message in messages %}
-            <div class="alert alert-success">{{ message }}</div>
+            <div class="alert alert-success">
+                {{ message }}
+                <button class="close" onclick="alert('TODO')">×</button>
+            </div>
             {% endfor %}
             {% endif %}
 
