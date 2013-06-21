@@ -4,6 +4,11 @@ from registration.forms import RegistrationForm
 
 from models import Project
 
+
+class EditDataForm(forms.Form):
+    pass
+
+
 class ProfileForm(forms.ModelForm):
     first_name = forms.CharField()
     last_name = forms.CharField()

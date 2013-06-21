@@ -12,8 +12,20 @@ from registration import signals
 from registration.backends.default.views import RegistrationView
 from registration.models import RegistrationProfile
 
-from mesh.forms import ProfileForm, ProjectForm, UserRegistrationForm
+from mesh.forms import EditDataForm, ProfileForm, ProjectForm, UserRegistrationForm
 from mesh.models import Project
+
+
+class EditDataView(FormView):
+    """
+
+    """
+    form_class = EditDataForm
+    template_name = 'edit_data.html'
+
+    def get(self, request, project_id):
+        project = Project.objects.get(id=project_id)
+        return render(request, self.template_name, {'project' : project})
 
 
 class HomeView(TemplateView):
