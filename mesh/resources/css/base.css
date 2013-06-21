@@ -50,17 +50,11 @@ form .required .controls:after {
 }
 
 .button-link {
-    font-size: 1.8em;
+    font-size: 2.4em;
     font-weight: bold;
 }
 .button-link:hover {
     text-decoration: none;
-}
-.button-link-red {
-    color: #FF0000;
-}
-.button-link-red:hover {
-    color: #BB0000;
 }
 
 form.disabled input {

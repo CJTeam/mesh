@@ -5,6 +5,7 @@ from django.contrib.sites.models import RequestSite
 from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
 from django.core.exceptions import PermissionDenied
+from django.core.mail import send_mail
 from django.views.generic import TemplateView, View
 from django.views.generic.edit import FormView, UpdateView
 
@@ -14,6 +15,19 @@ from registration.models import RegistrationProfile
 
 from mesh.forms import EditDataForm, ProfileForm, ProjectForm, UserRegistrationForm
 from mesh.models import Project
+
+
+class BrowseProjectsView(TemplateView):
+    """
+    List all Projects.
+
+    """
+    template_name = 'browse_projects.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(BrowseProjectsView, self).get_context_data(**kwargs)
+        context['projects'] = Project.objects.all()
+        return context
 
 
 class DeactivateProjectView(View):
@@ -57,6 +71,25 @@ class HomeView(TemplateView):
             context['collaborator_projects'] = self.request.user.collaborator_projects
 
         return context
+
+
+class JoinProjectView(View):
+    """
+    Contact project and request access to project.
+
+    """
+    def post(self, request, project_id):
+        project = Project.objects.get(id=project_id)
+        send_mail('Mesh Project Access Request',
+                  '{} {} with email address {} is requesting access to the project {}.'.format(request.user.first_name,
+                                                                                               request.user.last_name,
+                                                                                               request.user.email,
+                                                                                               project.name),
+                  'projects@mesh.com',
+                  [project.owner.email],
+                  fail_silently=False)
+        messages.info(self.request, 'Request for access to project {} sent'.format(project.name))
+        return redirect('home')
 
 
 class ProfileView(UpdateView):
