@@ -10,15 +10,42 @@ class Project(models.Model):
     node_description = models.CharField(max_length=30)
     edge_description = models.CharField(max_length=30)
 
+    def __str__(self):
+        return self.name
 
-class NodeMetadataField(object):
+class NodeMetadataField(models.Model):
     name = models.CharField(max_length=30)
     sequence_number = models.IntegerField()
     owner = models.ForeignKey(Project)
 
 
-class EdgeMetadataField(object):
-    name = models.CharField(max_length=30)
+class EdgeMetadataField(models.Model):
+    name = models.CharField(max_length=30, unique=True)
     sequence_number = models.IntegerField()
     owner = models.ForeignKey(Project)
+
+
+class Node(models.Model):
+    name = models.CharField(max_length=155)
+    project = models.ForeignKey(Project)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+
+
+EDGE_TYPES = (
+    (1, 'Undirected'),
+    (2, 'Directed'),
+)
+
+
+class Edge(models.Model):
+    from_node = models.ForeignKey(Node, related_name='from_edges')
+    to_node = models.ForeignKey(Node, related_name='to_edges')
+    type = models.IntegerField(choices=EDGE_TYPES)
+    project = models.ForeignKey(Project)
+
 

@@ -3,29 +3,91 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.contrib.sites.models import RequestSite
 from django.contrib.sites.models import Site
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.core.exceptions import PermissionDenied
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, CreateView
 from django.views.generic.edit import FormView, UpdateView
 
 from registration import signals
 from registration.backends.default.views import RegistrationView
 from registration.models import RegistrationProfile
 
-from mesh.forms import EditDataForm, ProfileForm, ProjectForm, UserRegistrationForm
-from mesh.models import Project
+from mesh.forms import ProfileForm, ProjectForm, UserRegistrationForm, EdgeForm, NodeForm
+from mesh.models import Project, Edge, Node
 
 
-class EditDataView(FormView):
+class EditDataView(TemplateView):
     """
 
     """
-    form_class = EditDataForm
     template_name = 'edit_data.html'
 
-    def get(self, request, project_id):
-        project = Project.objects.get(id=project_id)
-        return render(request, self.template_name, {'project' : project})
+    def get_context_data(self, **kwargs):
+        context = super(EditDataView, self).get_context_data(**kwargs)
+        project = Project.objects.get(id=self.kwargs['project_id'])
+        user = self.request.user
+
+        if user != project.owner and user not in project.collaborators:
+            raise PermissionDenied('Not authorised to edit this project!')
+
+        context['project'] = project
+        context['nodes'] = Node.objects.filter(project=project)
+        context['edges'] = Edge.objects.filter(project=project)
+
+        return context
+
+
+class NodeCreateView(CreateView):
+    """
+    Create a new Node.
+
+    """
+    model = Node
+    template_name = 'edit_data.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(NodeCreateView, self).get_context_data(**kwargs)
+        project = Project.objects.get(id=self.kwargs['project_id'])
+        user = self.request.user
+
+        if user != project.owner and user not in project.collaborators:
+            raise PermissionDenied('Not authorised to edit this project!')
+
+        context['project'] = project
+        context['nodes'] = Node.objects.filter(project=project)
+        context['edges'] = Edge.objects.filter(project=project)
+
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('edit_data', kwargs=self.kwargs)
+
+
+class EdgeCreateView(CreateView):
+    """
+    Create a new Edge.
+
+    """
+    form_class = EdgeForm
+    model = Edge
+    template_name = 'edit_data.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(EdgeCreateView, self).get_context_data(**kwargs)
+        project = Project.objects.get(id=self.kwargs['project_id'])
+        user = self.request.user
+
+        if user != project.owner and user not in project.collaborators:
+            raise PermissionDenied('Not authorised to edit this project!')
+
+        context['project'] = project
+        context['nodes'] = Node.objects.filter(project=project)
+        context['edges'] = Edge.objects.filter(project=project)
+
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('edit_data', kwargs=self.kwargs)
 
 
 class HomeView(TemplateView):
@@ -165,4 +227,3 @@ class RegistrationView(RegistrationView):
                                      user=new_user,
                                      request=request)
         return new_user
-

@@ -3,7 +3,82 @@
 
 {% block body_content %}
 
-    <legend>{{ project.name }} - Edit Data</legend>
-    TODO
+    <div class="row-fluid">
+        <div class="span12">
+            <h3>{{ project.name }} - Edit Data</h3>
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#nodes" data-toggle="tab">Nodes</a></li>
+                <li><a href="#edges" data-toggle="tab">Edges</a></li>
+            </ul>
+            {% if form.name.errors %}
+                <div class="alert alert-error">
+                    <strong>Error!</strong> Please enter a unique name.
+                </div>
+            {% endif %}
+            <div class="tab-content">
+                <div class="tab-pane active" id="nodes">
+                    <form class="form-inline" method="POST" action="{% url 'node_create' project.id %}">
+                        <label>Name:</label>
+                        <input type="text" name="name">
+                        <input type="hidden" name="project" value="{{ project.id }}">
+                        <button type="submit" class="btn btn-success"><i class="icon-plus icon-white"></i> Add</button>
+                        {% csrf_token %}
+                    </form>
+                    <table class="table table-striped">
+                        <thead>
+                            <th>Name</th>
+                        </thead>
+                        <tbody>
+                            {% for node in nodes %}
+                                <tr>
+                                    <td>{{ node.name }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane" id="edges">
+                    <form class="form-inline" method="POST" action="{% url 'edge_create' project.id %}">
+                        <label>From:</label>
+                        <select name="from_node">
+                            {% for node in nodes %}
+                                <option value="{{ node.id }}">{{ node.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <label>To:</label>
+                        <select name="to_node">
+                            {% for node in nodes %}
+                                <option value="{{ node.id }}">{{ node.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <label>Type:</label>
+                        <select name="type">
+                            <option value="1">Undirected</option>
+                            <option value="2">Directed</option>
+                        </select>
+                        <input type="hidden" name="project" value="{{ project.id }}">
+                        <button type="submit" class="btn btn-success"><i class="icon-plus icon-white"></i> Add</button>
+                        {% csrf_token %}
+                    </form>
+                    <table class="table table-striped">
+                        <thead>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Type</th>
+                        </thead>
+                        <tbody>
+                            {% for edge in edges %}
+                                <tr>
+                                    <td>{{ edge.from_node.name }}</td>
+                                    <td>{{ edge.to_node.name }}</td>
+                                    <td>{{ edge.get_type_display }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

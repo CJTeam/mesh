@@ -2,11 +2,17 @@ from django.contrib.auth.models import User
 from django import forms
 from registration.forms import RegistrationForm
 
-from models import Project
+from models import Project, Edge, Node
 
 
-class EditDataForm(forms.Form):
-    pass
+class NodeForm(forms.ModelForm):
+    class Meta:
+        model = Node
+
+
+class EdgeForm(forms.ModelForm):
+    class Meta:
+        model = Edge
 
 
 class ProfileForm(forms.ModelForm):

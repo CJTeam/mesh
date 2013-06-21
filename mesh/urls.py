@@ -1,8 +1,9 @@
 from django.conf.urls import patterns, include, url
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 
-from mesh.views import EditDataView, HomeView, ProfileView, ProjectCreateView, ProjectUpdateView, RegistrationView
+from mesh.views import EditDataView, HomeView, ProfileView, ProjectCreateView, ProjectUpdateView, RegistrationView, EdgeCreateView, NodeCreateView
 
 from django.contrib import admin
 admin.autodiscover()
@@ -14,7 +15,9 @@ urlpatterns = patterns('',
     url(r'^$', HomeView.as_view(), name="home" ),
 
     url(r'^project/$', ProjectCreateView.as_view(), name='project_create'),
-    url(r'^project/(?P<project_id>.*)/edit_data/$', EditDataView.as_view(), name='edit_data'),
+    url(r'^project/(?P<project_id>.*)/edit_data/$', login_required(EditDataView.as_view()), name='edit_data'),
+    url(r'^project/(?P<project_id>.*)/node/create$', login_required(NodeCreateView.as_view()), name='node_create'),
+    url(r'^project/(?P<project_id>.*)/edge/create$', login_required(EdgeCreateView.as_view()), name='edge_create'),
     url(r'^project/(?P<project_id>.*)/$', ProjectUpdateView.as_view(), name='project_update'),
 
     # Registration
