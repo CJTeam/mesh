@@ -32,8 +32,7 @@ form .required .controls:after {
 .project-box {
     background-color: #A3B6A3;
     cursor: pointer;
-    height: auto !important;
-    min-height: 150px !important;
+    height: 200px !important;
     opacity: 0.8;
 }
 .project-box-collaborator {
@@ -51,7 +50,7 @@ form .required .controls:after {
 }
 
 .button-link {
-    font-size: 1.8em;
+    font-size: 2.4em;
     font-weight: bold;
 }
 .button-link:hover {

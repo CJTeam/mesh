@@ -5,7 +5,8 @@ from django.contrib.sites.models import RequestSite
 from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.core.exceptions import PermissionDenied
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import TemplateView, CreateView, View
+from django.core.mail import send_mail
 from django.views.generic.edit import FormView, UpdateView
 
 from registration import signals
@@ -14,6 +15,33 @@ from registration.models import RegistrationProfile
 
 from mesh.forms import ProfileForm, ProjectForm, UserRegistrationForm, EdgeForm, NodeForm
 from mesh.models import Project, Edge, Node
+
+
+class BrowseProjectsView(TemplateView):
+    """
+    List all Projects.
+
+    """
+    template_name = 'browse_projects.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(BrowseProjectsView, self).get_context_data(**kwargs)
+        context['projects'] = Project.objects.all()
+        return context
+
+
+class DeactivateProjectView(View):
+    """
+    Deactivate (delete) a project.
+
+    """
+    def post(self, request, project_id):
+        project = Project.objects.get(id=project_id)
+        if project.owner != request.user:
+            raise PermissionDenied()
+        project.delete()
+        messages.info(self.request, 'Project {} deactivated'.format(project.name))
+        return redirect('home')
 
 
 class EditDataView(TemplateView):
@@ -107,6 +135,25 @@ class HomeView(TemplateView):
         return context
 
 
+class JoinProjectView(View):
+    """
+    Contact project and request access to project.
+
+    """
+    def post(self, request, project_id):
+        project = Project.objects.get(id=project_id)
+        send_mail('Mesh Project Access Request',
+                  '{} {} with email address {} is requesting access to the project {}.'.format(request.user.first_name,
+                                                                                               request.user.last_name,
+                                                                                               request.user.email,
+                                                                                               project.name),
+                  'projects@mesh.com',
+                  [project.owner.email],
+                  fail_silently=False)
+        messages.info(self.request, 'Request for access to project {} sent'.format(project.name))
+        return redirect('home')
+
+
 class ProfileView(UpdateView):
     """
     View/update user profile.
@@ -124,6 +171,31 @@ class ProfileView(UpdateView):
         return reverse('home')
 
 
+class ProjectCollaboratorsView(TemplateView):
+    """
+    View and update collaborators for a project.
+
+    """
+    template_name = 'collaborators.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ProjectCollaboratorsView, self).get_context_data(**kwargs)
+        context['project'] = project = Project.objects.get(id=kwargs['project_id'])
+        context['users'] = User.objects.filter(is_superuser=False).filter(is_active=True).exclude(id=project.owner.id)
+        return context
+
+    def post(self, request, project_id):
+        # Update collaborators list
+        project = Project.objects.get(id=project_id)
+        project.collaborators.clear()
+        for user_id in request.POST.getlist('collaborators'):
+            user = User.objects.get(id=user_id)
+            project.collaborators.add(user)
+        project.save()
+        messages.info(self.request, 'Collaborators for project {} updated'.format(project.name))
+        return redirect('project_update', project_id)
+
+
 class ProjectCreateView(FormView):
     """
     Create a new project.
@@ -132,10 +204,12 @@ class ProjectCreateView(FormView):
     form_class = ProjectForm
     template_name = 'project.html'
 
+    """
     def get_form_kwargs(self):
         kwargs = super(ProjectCreateView, self).get_form_kwargs()
         kwargs.update({'user' : self.request.user })
         return kwargs
+    """
 
     def form_valid(self, form):
 
@@ -148,14 +222,9 @@ class ProjectCreateView(FormView):
         project.node_description = data['node_description']
         project.edge_description = data['edge_description']
         project.save()
-        project.collaborators.clear()
-        for user in data['collaborators']:
-            project.collaborators.add(user)
-        project.save()
-        project.collaborators = data['collaborators']
 
         messages.info(self.request, 'New project {} created'.format(project.name))
-        return redirect('home')
+        return redirect('project_update', project_id=project.id)
 
 
 class ProjectUpdateView(FormView):
@@ -168,13 +237,15 @@ class ProjectUpdateView(FormView):
 
     def get(self, request, project_id):
         project = Project.objects.get(id=project_id)
-        form = ProjectForm(request.user, instance=project)
+        form = ProjectForm(instance=project)
         return render(request, self.template_name, {'form' : form, 'project' : project})
 
+    """
     def get_form_kwargs(self):
         kwargs = super(ProjectUpdateView, self).get_form_kwargs()
         kwargs.update({'user' : self.request.user })
         return kwargs
+    """
 
     def post(self, request, project_id):
         form_class = self.get_form_class()
@@ -188,11 +259,7 @@ class ProjectUpdateView(FormView):
             project.description=data['description']
             project.node_description = data['node_description']
             project.edge_description = data['edge_description']
-            project.collaborators.clear()
-            for user in data['collaborators']:
-                project.collaborators.add(user)
             project.save()
-            project.collaborators = data['collaborators']
             messages.info(self.request, 'Project {} updated'.format(project.name))
             return redirect('home')
         else:

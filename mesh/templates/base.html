@@ -36,13 +36,14 @@
             {% for message in messages %}
             <div class="alert alert-success">
                 {{ message }}
-                <button class="close" onclick="alert('TODO')">×</button>
+                <a class="close" data-dismiss="alert" href="#">&times;</a>
             </div>
             {% endfor %}
             {% endif %}
 
             {% block  body_content %}{% endblock %}
         </div>
+
         <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/jquery-1.9.1.min.js"><\/script>')</script>
             <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
 {% block extra_script %}{% endblock %}
