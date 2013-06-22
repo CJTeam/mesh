@@ -26,7 +26,7 @@ class BrowseProjectsView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(BrowseProjectsView, self).get_context_data(**kwargs)
-        context['projects'] = Project.objects.all()
+        context['projects'] = Project.objects.all().order_by('name')
         return context
 
 

@@ -13,7 +13,7 @@
     </div>
     {% else %}
         <div class="row-fluid">
-            <legend>My Projects</legend>
+            <legend>Your Projects</legend>
         </div>
 
             {% for p in owner_projects.all %}
@@ -60,7 +60,7 @@
 
             {% if collaborator_projects.all|length_is:'0' and owner_projects.all|length_is:'0' %}
                 <div class="row-fluid">
-                    You are not a member of any projects. Why not <a href="">browse existing projects</a> or <a href="{% url 'project_create' %}">create your own</a>.
+                    You are not a member of any projects. Why not <a href="{% url 'browse_projects' %}">browse existing projects</a> or <a href="{% url 'project_create' %}">create your own</a>.
                 </div>
             {% endif %}
 

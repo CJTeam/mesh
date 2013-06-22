@@ -1,14 +1,14 @@
 {% extends "base.html" %}
-{% block page_title %}Edit Data{% endblock %}
+{% block page_title %}Enter Data{% endblock %}
 
 {% block body_content %}
 
     <div class="row-fluid">
         <div class="span12">
-            <h3>{{ project.name }} - Edit Data</h3>
+            <legend>Enter Data for {{ project.name }}</legend>
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#nodes" data-toggle="tab">Nodes</a></li>
-                <li><a href="#edges" data-toggle="tab">Edges</a></li>
+                <li class="active"><a href="#nodes" data-toggle="tab">{{ project.node_description }}{% if project.owner == user %} (Nodes){% endif %}</a></li>
+                <li><a href="#edges" data-toggle="tab">{{ project.edge_description }}{% if project.owner == user %} (Edges){% endif %}</a></li>
             </ul>
             {% if form.name.errors %}
                 <div class="alert alert-error">
@@ -24,6 +24,11 @@
                         <button type="submit" class="btn btn-success"><i class="icon-plus icon-white"></i> Add</button>
                         {% csrf_token %}
                     </form>
+                    <br/><br/>
+                    <h4>Current {{ project.node_description }}</h4>
+                    {% if nodes|length_is:'0'%}
+                    <p>There are no {{ project.node_description }} in this project.</p>
+                    {% else %}
                     <table class="table table-striped">
                         <thead>
                             <th>Name</th>
@@ -36,6 +41,7 @@
                             {% endfor %}
                         </tbody>
                     </table>
+                    {% endif %}
                 </div>
                 <div class="tab-pane" id="edges">
                     <form class="form-inline" method="POST" action="{% url 'edge_create' project.id %}">
@@ -60,6 +66,11 @@
                         <button type="submit" class="btn btn-success"><i class="icon-plus icon-white"></i> Add</button>
                         {% csrf_token %}
                     </form>
+                    <br/><br/>
+                    <h4>Current {{ project.edge_description }}</h4>
+                    {% if edges|length_is:'0'%}
+                    <p>There are no {{ project.edge_description }} in this project.</p>
+                    {% else %}
                     <table class="table table-striped">
                         <thead>
                             <th>From</th>
@@ -76,6 +87,7 @@
                             {% endfor %}
                         </tbody>
                     </table>
+                    {% endif %}
                 </div>
             </div>
         </div>

@@ -3,8 +3,12 @@
 
 {% block body_content %}
 
-    <legend>{{ project.name }} - Collaborators</legend>
+    <legend>Edit Collaborators for {{ project.name }}</legend>
 
+
+    {% if users|length_is:'0' %}
+    <p>Unfortunately there are currently no users in the system available to collaborate on your project. Click <a href="{% url 'project_update' project.id %}">here</a> to return to your project.</p>
+    {% else %}
     <form method="post">
     {% csrf_token %}
         <table class="table" style="width: 400px">
@@ -26,9 +30,10 @@
         <div class="control-group">
             <div class="controls">
                   <button type="button" onclick="window.location = '{% url 'project_update' project.id %}';" class="btn">Cancel</button>
-                  <button type="submit" class="btn btn-info">Update</button>
+                  <button type="submit" class="btn btn-info">Continue</button>
             </div>
         </div>
     </form>
+    {% endif %}
 
 {% endblock %}

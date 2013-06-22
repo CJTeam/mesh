@@ -11,11 +11,99 @@
 {% block body_content %}
 
     <div class="row-fluid">
-        <legend>Project Details</legend>
+        <legend>{% if not project %}New {% endif %}Project Details</legend>
     </div>
 
     <div class="row-fluid">
-        {% if project.owner == user %}
+        <div class="span8">
+
+            {% if not project or project.owner == user %}
+            <form id="project-details-form" method="post" action="" class="wide form-horizontal">
+                {% csrf_token %}
+
+                {% if project %}
+                    <input type="hidden" name="project_id" value="{{ project.id }}"/>
+                {% endif %}
+
+                <fieldset>
+                    {% for field in form %}
+                        {% if field.errors %}
+                            <div class="control-group error">
+                                <label for="{{ field.id_for_label }}" class="control-label">{{ field.label }}</label>
+                                <div class="controls">
+                                    {{ field }}
+                                    <span class="help-block">{{ field.errors|first|escape }}</span>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="control-group">
+                                <label for="{{ field.id_for_label }}" class="control-label">{{ field.label }}</label>
+                                <div class="controls">
+                                    {{ field }}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    {% if project %}
+                    <div class="control-group">
+                        <label class="control-label">Collaborators</label>
+                        <div class="controls">
+                            {% for c in project.collaborators.all %} {{ c.first_name }} {{ c.last_name }} <br/> {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="button"
+                                    onclick="window.location = '{% if project %}{% url 'project_update' project.id %}{% else %}{% url 'home' %}{% endif %}';"
+                                    class="btn">Cancel</button>
+                            <button type="submit" class="btn btn-info" style="">Continue</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+            {% endif %}
+            {% if project %}
+            <div id="project-details-display">
+                <!-- Display project details -->
+                <h2>{{ project.name }}</h2>
+                <p style="padding-left:30px">{{ project.description }}</p>
+                <br/>
+                <h4>Owner</h4>
+                <div style="padding-left: 30px">
+                    {{ project.owner.first_name }} {{ project.owner.last_name }}
+                </div>
+                <h4>Collaborators</h4>
+                <div style="padding-left: 30px">
+                    {% for c in project.collaborators.all %} {{ c.first_name }} {{ c.last_name }} <br/> {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+        <div class="span4" style="padding-top:50px">
+            {% if project %}
+                {% if user == project.owner or user in project.collaborators.all %}
+                    <a class="button-link" href="{% url 'edit_data' project.id %}">Enter Data ></a>
+                {% else %}
+                    <a class="button-link confirm-join" href="javascript:void">Join Project ></a>
+                {% endif %}
+            {% endif %}
+        </div>
+     </div>
+
+    {% if project.owner == user %}
+    <div id="owner-toolbar" class="row-fluid" style="padding-top:20px">
+
+        <!-- Edit details -->
+        <button class="btn"
+                onclick="$('form#project-details-form').show(); $('#owner-toolbar, #project-details-display').hide(); $('legend').text('Edit Project Details');">
+            Edit Details
+        </button>
+
+        <!-- Edit collaborators -->
+        <button class="btn" onclick="window.location = '{% url 'project_collaborators' project.id %}';">Edit Collaborators</button>
+
         <!-- Deactivate project -->
         <button class="btn btn-danger confirm-deactivate">Deactivate</button>
         <div id="modal-deactivate" class="modal hide fade">
@@ -34,84 +122,8 @@
                 </form>
             </div>
         </div>
-
-        <!-- Edit collaborators -->
-        <button class="btn" onclick="window.location = '{% url 'project_collaborators' project.id %}';">Edit Collaborators</button>
-        <br/><br/>
-        {% endif %}
     </div>
-
-    <div class="row-fluid">
-        <div class="span6">
-
-            {% if not project or project.owner == user %}
-                <form method="post" action="" class="wide form-horizontal">
-                    {% csrf_token %}
-
-                    {% if project %}
-                        <input type="hidden" name="project_id" value="{{ project.id }}"/>
-                    {% endif %}
-
-                    <fieldset>
-                        {% for field in form %}
-                            {% if field.errors %}
-                                <div class="control-group error">
-                                    <label for="{{ field.id_for_label }}" class="control-label">{{ field.label }}</label>
-                                    <div class="controls">
-                                        {{ field }}
-                                        <span class="help-block">{{ field.errors|first|escape }}</span>
-                                    </div>
-                                </div>
-                            {% else %}
-                                <div class="control-group">
-                                    <label for="{{ field.id_for_label }}" class="control-label">{{ field.label }}</label>
-                                    <div class="controls">
-                                        {{ field }}
-                                    </div>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                        <div class="control-group">
-                            <label class="control-label">Collaborators</label>
-                            <div class="controls">
-                                {% for c in project.collaborators.all %} {{ c.first_name }} {{ c.last_name }} <br/> {% endfor %}
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <div class="controls">
-                                <button type="button" onclick="window.location = '{% url 'home' %}';" class="btn">Cancel</button>
-                                <button type="submit" class="btn btn-info" style="float:none">Continue</button>
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
-
-            {% else %}
-                <!-- Display project details -->
-                <h2>{{ project.name }}</h2>
-                <p style="padding-left:30px">{{ project.description }}</p>
-                <br/>
-                <h4>Owner</h4>
-                <div style="padding-left: 30px">
-                    {{ project.owner.first_name }} {{ project.owner.last_name }}
-                </div>
-                <h4>Collaborators</h4>
-                <div style="padding-left: 30px">
-                    {% for c in project.collaborators.all %} {{ c.first_name }} {{ c.last_name }} <br/> {% endfor %}
-                </div>
-            {% endif %}
-
-        </div>
-        <div class="span6" style="padding-top:50px">
-            {% if project %}
-                {% if user == project.owner or user in project.collaborators.all %}
-                    <a class="button-link" href="{% url 'edit_data' project.id %}">Edit Data ></a>
-                {% else %}
-                    <a class="button-link confirm-join" href="javascript:void">Join Project ></a>
-                {% endif %}
-            {% endif %}
-        </div>
-     </div>
+    {% endif %}
 
     <div id="modal-join" class="modal hide fade">
         <div class="modal-header">
@@ -148,5 +160,9 @@
         var id = $(this).data('id');
         $('#modal-join').data('id', id).modal('show');
     });
+
+    {% if project%}
+    $('form#project-details-form').hide();
+    {% endif %}
 </script>
 {% endblock %}

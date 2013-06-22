@@ -3,10 +3,14 @@
 
 {% block body_content %}
 
-    <legend>All Projects</legend>
+    <legend>Public Projects</legend>
+    {% if projects|length_is:'0' %}
+    <p>There are currently no public projects listed. Why not <a href="{% url 'project_create' %}">start a new one</a>?</p>
+    {% else %}
     <table class="table table-striped">
         <thead>
             <tr>
+                <th>&nbsp;</th>
                 <th>Name</th>
                 <th>Description</th>
                 <th>Owner</th>
@@ -15,12 +19,30 @@
         <tbody>
         {% for p in projects %}
             <tr>
-                <td><a href="{% url 'project_update' p.id %}">{{ p.name }}</a></td>
-                <td>{{ p.description }}</td>
-                <td>{{ p.owner.first_name }} {{ p.owner.last_name }}</td>
+                <td>
+                    {% if p.owner == user %}
+                    <i class="icon-briefcase" title="You started this project."></i>
+                    {% elif user in p.collaborators.all %}
+                    <i class="icon-user" title="You are a collaborator on this project."></i>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'project_update' p.id %}">{{ p.name }}</a>
+                </td>
+                <td>
+                    {{ p.description }}
+                </td>
+                <td>
+                    {% if p.owner == user %}
+                    <b>{{ p.owner.first_name }} {{ p.owner.last_name }}</b>
+                    {% else %}
+                    {{ p.owner.first_name }} {{ p.owner.last_name }}
+                    {% endif %}
+                </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+    {% endif %}
 
 {% endblock %}
