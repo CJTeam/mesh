@@ -10,8 +10,7 @@
                 <li class="active"><a href="#nodes" data-toggle="tab">{{ project.node_description }}{% if project.owner == user %} (Nodes){% endif %}</a></li>
                 <li><a href="#edges" data-toggle="tab">{{ project.edge_description }}{% if project.owner == user %} (Edges){% endif %}</a></li>
             </ul>
-            <div id="node-name-error" class="alert alert-error" style="display:none">
-                <strong>Error!</strong> Please enter a unique name.
+            <div id="messages" style="height:50px">
             </div>
             <div class="tab-content">
                 <div class="tab-pane active" id="nodes">
@@ -103,9 +102,35 @@
 {% block extra_script %}
 <script type="application/javascript">
 
+    function fadeError (message) {
+        _fadeAlert(message, 'alert-error');
+    }
+
+    function fadeSuccess (message) {
+        _fadeAlert(message, 'alert-success');
+    }
+
+    function _fadeAlert(message, cls) {
+
+        // Clear existing messages
+        $('#messages .alert').hide(function () {
+            $().remove('#messages .alert');
+        });
+
+        // Display new message
+        var msgEl = $('<div class="alert ' + cls + '">' + message + '</div>');
+        $('#messages').append(msgEl);
+        setTimeout(function () {
+            msgEl.fadeOut(500, function () { $().remove(msgEl); });
+        }, 2000);
+    }
+
     function saveEdge () {
         $.post('{% url 'edge_create' project.id %}', $('#edge-form').serialize(), function (data) {
             $('#edge-table').html(data);
+            var join = $('#edge-form #input-type').val() == '1' ? ' - ' : ' > ';
+            var edge = $('#edge-form #input-from option:selected').text() + join + $('#edge-form #input-to option:selected').text();
+            fadeSuccess(edge + ' added');
         }).error(function (data) {
             // pass
         });
@@ -115,10 +140,11 @@
         $.post('{% url 'node_create' project.id %}', $('#node-form').serialize(), function (data) {
             $('#node-name-error').hide();
             $('#node-table').html(data);
+            fadeSuccess($('#node-form #input-name').val() + ' added');
         }).error(function (data) {
             var errors = $.parseJSON(data.responseText).errors;
             if (errors.indexOf('name') >= 0) {
-                $('#node-name-error').show();
+                fadeError('Please enter a unique name.');
             }
         });
     }
