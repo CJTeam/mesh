@@ -17,26 +17,43 @@
             {% endif %}
             <div class="tab-content">
                 <div class="tab-pane active" id="nodes">
-                    <form class="form-inline" method="POST" action="{% url 'node_create' project.id %}">
-                        <label>Name:</label>
-                        <input type="text" name="name">
+                    <form class="wide form-horizontal" method="POST" action="{% url 'node_create' project.id %}">
+                        <div class="control-group">
+                            <label for="input-name" class="control-label">Name</label>
+                            <div class="controls">
+                                <input type="text" name="name" id="input-name">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label for="input-node-description" class="control-label">Description</label>
+                            <div class="controls">
+                                <textarea name="description" id="input-node-description"></textarea>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls">
+                                <button type="submit" class="btn btn-success"><i class="icon-plus icon-white"></i> Add</button>
+                            </div>
+                        </div>
                         <input type="hidden" name="project" value="{{ project.id }}">
-                        <button type="submit" class="btn btn-success"><i class="icon-plus icon-white"></i> Add</button>
+
                         {% csrf_token %}
                     </form>
                     <br/><br/>
-                    <h4>Current {{ project.node_description }}</h4>
+                    <h4>Existing {{ project.node_description }}</h4>
                     {% if nodes|length_is:'0'%}
                     <p>There are no {{ project.node_description }} in this project.</p>
                     {% else %}
                     <table class="table table-striped">
                         <thead>
-                            <th>Name</th>
+                            <th style="width: 300px">Name</th>
+                            <th>Description</th>
                         </thead>
                         <tbody>
                             {% for node in nodes %}
                                 <tr>
                                     <td>{{ node.name }}</td>
+                                    <td>{{ node.description }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -44,45 +61,67 @@
                     {% endif %}
                 </div>
                 <div class="tab-pane" id="edges">
-                    <form class="form-inline" method="POST" action="{% url 'edge_create' project.id %}">
-                        <label>From:</label>
-                        <select name="from_node">
-                            {% for node in nodes %}
-                                <option value="{{ node.id }}">{{ node.name }}</option>
-                            {% endfor %}
-                        </select>
-                        <label>To:</label>
-                        <select name="to_node">
-                            {% for node in nodes %}
-                                <option value="{{ node.id }}">{{ node.name }}</option>
-                            {% endfor %}
-                        </select>
-                        <label>Type:</label>
-                        <select name="type">
-                            <option value="1">Undirected</option>
-                            <option value="2">Directed</option>
-                        </select>
+                    <form class="wide form-horizontal" method="POST" action="{% url 'edge_create' project.id %}">
+                        <div class="control-group">
+                            <label for="input-type" class="control-label">Type</label>
+                            <div class="controls">
+                                <select name="type" onchange="updateLabels(this);" id="input-type">
+                                    <option value="1">Undirected</option>
+                                    <option value="2" selected="selected">Directed</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label id="from-label" for="input-from" class="control-label">From</label>
+                            <div class="controls">
+                                <select id="input-from" name="from_node">
+                                    {% for node in nodes %}
+                                        <option value="{{ node.id }}">{{ node.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label id="to-label" for="input-to" class="control-label">To</label>
+                            <div class="controls">
+                                <select id="input-to" name="to_node">
+                                    {% for node in nodes %}
+                                        <option value="{{ node.id }}">{{ node.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label for="input-edge-description" class="control-label">Description</label>
+                            <div class="controls">
+                                <textarea name="description" id="input-edge-description"></textarea>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls">
+                                <button type="submit" class="btn btn-success"><i class="icon-plus icon-white"></i> Add</button>
+                            </div>
+                        </div>
                         <input type="hidden" name="project" value="{{ project.id }}">
-                        <button type="submit" class="btn btn-success"><i class="icon-plus icon-white"></i> Add</button>
                         {% csrf_token %}
                     </form>
                     <br/><br/>
-                    <h4>Current {{ project.edge_description }}</h4>
+                    <h4>Existing {{ project.edge_description }}</h4>
                     {% if edges|length_is:'0'%}
                     <p>There are no {{ project.edge_description }} in this project.</p>
                     {% else %}
                     <table class="table table-striped">
                         <thead>
-                            <th>From</th>
-                            <th>To</th>
-                            <th>Type</th>
+                            <th style="width: 100px">Type</th>
+                            <th style="width: 300px">{{ project.node_description }}</th>
+                            <th>Description</th>
                         </thead>
                         <tbody>
                             {% for edge in edges %}
                                 <tr>
-                                    <td>{{ edge.from_node.name }}</td>
-                                    <td>{{ edge.to_node.name }}</td>
                                     <td>{{ edge.get_type_display }}</td>
+                                    <td>{{ edge }}</td>
+                                    <td>{{ edge.description }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -93,4 +132,23 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block extra_script %}
+<script type="application/javascript">
+
+    function updateLabels (selectEl) {
+        if ($(selectEl).val() == '1') {
+            // Non-directional
+            $('#from-label').text('Between:');
+            $('#to-label').text('And:')
+        }
+        else {
+            // Directional
+            $('#from-label').text('From:');
+            $('#to-label').text('To:')
+        }
+    }
+
+</script>
 {% endblock %}

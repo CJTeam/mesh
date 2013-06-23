@@ -27,6 +27,7 @@ class EdgeMetadataField(models.Model):
 
 class Node(models.Model):
     name = models.CharField(max_length=155)
+    description = models.CharField(max_length=200, blank=True)
     project = models.ForeignKey(Project)
 
     def __str__(self):
@@ -43,9 +44,13 @@ EDGE_TYPES = (
 
 
 class Edge(models.Model):
+    description = models.CharField(max_length=200, blank=True)
     from_node = models.ForeignKey(Node, related_name='from_edges')
     to_node = models.ForeignKey(Node, related_name='to_edges')
     type = models.IntegerField(choices=EDGE_TYPES)
     project = models.ForeignKey(Project)
 
-
+    def __str__(self):
+        if self.type == 1:
+            return '{} - {}'.format(self.from_node.name, self.to_node.name)
+        return '{} > {}'.format(self.from_node.name, self.to_node.name)
