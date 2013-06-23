@@ -1,5 +1,8 @@
+import json
+
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect, render
 from django.contrib.sites.models import RequestSite
 from django.contrib.sites.models import Site
@@ -67,28 +70,37 @@ class EditDataView(TemplateView):
 
 class NodeCreateView(CreateView):
     """
-    Create a new Node.
+    Create a new Node via AJAX request.
 
     """
     model = Node
     template_name = 'edit_data.html'
 
-    def get_context_data(self, **kwargs):
-        context = super(NodeCreateView, self).get_context_data(**kwargs)
-        project = Project.objects.get(id=self.kwargs['project_id'])
-        user = self.request.user
+    def form_invalid(self, form):
+        return HttpResponseBadRequest(json.dumps({'errors' : form.errors.keys()}))
 
+    def get_context_data(self, **kwargs):
+        user = self.request.user
         if user != project.owner and user not in project.collaborators:
             raise PermissionDenied('Not authorised to edit this project!')
-
-        context['project'] = project
-        context['nodes'] = Node.objects.filter(project=project)
-        context['edges'] = Edge.objects.filter(project=project)
-
-        return context
+        return super(NodeCreateView, self).get_context_data(**kwargs)
 
     def get_success_url(self):
-        return reverse_lazy('edit_data', kwargs=self.kwargs)
+        return reverse_lazy('node_table', kwargs=self.kwargs)
+
+
+class NodeTableView(TemplateView):
+    """
+    HTML fragment for project node table.
+
+    """
+    template_name = 'node_table.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(NodeTableView, self).get_context_data(**kwargs)
+        project = Project.objects.get(id=kwargs['project_id'])
+        context['nodes'] = Node.objects.filter(project=project)
+        return context
 
 
 class EdgeCreateView(CreateView):
@@ -96,26 +108,34 @@ class EdgeCreateView(CreateView):
     Create a new Edge.
 
     """
-    form_class = EdgeForm
     model = Edge
     template_name = 'edit_data.html'
 
-    def get_context_data(self, **kwargs):
-        context = super(EdgeCreateView, self).get_context_data(**kwargs)
-        project = Project.objects.get(id=self.kwargs['project_id'])
-        user = self.request.user
+    def form_invalid(self, form):
+        return HttpResponseBadRequest(json.dumps({'errors' : form.errors.keys()}))
 
+    def get_context_data(self, **kwargs):
+        user = self.request.user
         if user != project.owner and user not in project.collaborators:
             raise PermissionDenied('Not authorised to edit this project!')
-
-        context['project'] = project
-        context['nodes'] = Node.objects.filter(project=project)
-        context['edges'] = Edge.objects.filter(project=project)
-
-        return context
+        return super(EdgeCreateView, self).get_context_data(**kwargs)
 
     def get_success_url(self):
-        return reverse_lazy('edit_data', kwargs=self.kwargs)
+        return reverse_lazy('edge_table', kwargs=self.kwargs)
+
+
+class EdgeTableView(TemplateView):
+    """
+    HTML fragment for project edge table.
+
+    """
+    template_name = 'edge_table.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(EdgeTableView, self).get_context_data(**kwargs)
+        project = Project.objects.get(id=kwargs['project_id'])
+        context['edges'] = Edge.objects.filter(project=project)
+        return context
 
 
 class HomeView(TemplateView):

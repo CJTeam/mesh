@@ -1,0 +1,18 @@
+{% if nodes|length_is:'0'%}
+<p>There are no {{ project.node_description }} in this project.</p>
+{% else %}
+<table class="table table-striped">
+    <thead>
+        <th style="width: 300px">Name</th>
+        <th>Description</th>
+    </thead>
+    <tbody>
+        {% for node in nodes %}
+            <tr>
+                <td>{{ node.name }}</td>
+                <td>{{ node.description }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}

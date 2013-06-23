@@ -15,6 +15,8 @@ urlpatterns = patterns('',
 
     url(r'^browse_projects/$', BrowseProjectsView.as_view(), name='browse_projects'),
     url(r'^project/$', ProjectCreateView.as_view(), name='project_create'),
+    url(r'^project/(?P<project_id>.*)/node_table/$', login_required(NodeTableView.as_view()), name='node_table'),
+    url(r'^project/(?P<project_id>.*)/edge_table/$', login_required(EdgeTableView.as_view()), name='edge_table'),
     url(r'^project/(?P<project_id>.*)/edit_data/$', login_required(EditDataView.as_view()), name='edit_data'),
     url(r'^project/(?P<project_id>.*)/node/create$', login_required(NodeCreateView.as_view()), name='node_create'),
     url(r'^project/(?P<project_id>.*)/edge/create$', login_required(EdgeCreateView.as_view()), name='edge_create'),

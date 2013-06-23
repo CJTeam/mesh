@@ -1,0 +1,20 @@
+{% if edges|length_is:'0'%}
+<p>There are no {{ project.edge_description }} in this project.</p>
+{% else %}
+<table class="table table-striped">
+    <thead>
+        <th style="width: 100px">Type</th>
+        <th style="width: 300px">{{ project.node_description }}</th>
+        <th>Description</th>
+    </thead>
+    <tbody>
+        {% for edge in edges %}
+            <tr>
+                <td>{{ edge.get_type_display }}</td>
+                <td>{{ edge }}</td>
+                <td>{{ edge.description }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}

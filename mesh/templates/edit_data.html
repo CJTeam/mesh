@@ -10,14 +10,12 @@
                 <li class="active"><a href="#nodes" data-toggle="tab">{{ project.node_description }}{% if project.owner == user %} (Nodes){% endif %}</a></li>
                 <li><a href="#edges" data-toggle="tab">{{ project.edge_description }}{% if project.owner == user %} (Edges){% endif %}</a></li>
             </ul>
-            {% if form.name.errors %}
-                <div class="alert alert-error">
-                    <strong>Error!</strong> Please enter a unique name.
-                </div>
-            {% endif %}
+            <div id="node-name-error" class="alert alert-error" style="display:none">
+                <strong>Error!</strong> Please enter a unique name.
+            </div>
             <div class="tab-content">
                 <div class="tab-pane active" id="nodes">
-                    <form class="wide form-horizontal" method="POST" action="{% url 'node_create' project.id %}">
+                    <form id="node-form" class="wide form-horizontal">
                         <div class="control-group">
                             <label for="input-name" class="control-label">Name</label>
                             <div class="controls">
@@ -32,7 +30,7 @@
                         </div>
                         <div class="control-group">
                             <div class="controls">
-                                <button type="submit" class="btn btn-success"><i class="icon-plus icon-white"></i> Add</button>
+                                <button onclick="saveNode(); return false;" class="btn btn-success"><i class="icon-plus icon-white"></i> Add</button>
                             </div>
                         </div>
                         <input type="hidden" name="project" value="{{ project.id }}">
@@ -41,27 +39,12 @@
                     </form>
                     <br/><br/>
                     <h4>Existing {{ project.node_description }}</h4>
-                    {% if nodes|length_is:'0'%}
-                    <p>There are no {{ project.node_description }} in this project.</p>
-                    {% else %}
-                    <table class="table table-striped">
-                        <thead>
-                            <th style="width: 300px">Name</th>
-                            <th>Description</th>
-                        </thead>
-                        <tbody>
-                            {% for node in nodes %}
-                                <tr>
-                                    <td>{{ node.name }}</td>
-                                    <td>{{ node.description }}</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    {% endif %}
+                    <div id="node-table">
+                        {% include 'node_table.html' %}
+                    </div>
                 </div>
                 <div class="tab-pane" id="edges">
-                    <form class="wide form-horizontal" method="POST" action="{% url 'edge_create' project.id %}">
+                    <form id="edge-form" class="wide form-horizontal">
                         <div class="control-group">
                             <label for="input-type" class="control-label">Type</label>
                             <div class="controls">
@@ -99,7 +82,7 @@
                         </div>
                         <div class="control-group">
                             <div class="controls">
-                                <button type="submit" class="btn btn-success"><i class="icon-plus icon-white"></i> Add</button>
+                                <button onclick="saveEdge(); return false;" class="btn btn-success"><i class="icon-plus icon-white"></i> Add</button>
                             </div>
                         </div>
                         <input type="hidden" name="project" value="{{ project.id }}">
@@ -107,26 +90,9 @@
                     </form>
                     <br/><br/>
                     <h4>Existing {{ project.edge_description }}</h4>
-                    {% if edges|length_is:'0'%}
-                    <p>There are no {{ project.edge_description }} in this project.</p>
-                    {% else %}
-                    <table class="table table-striped">
-                        <thead>
-                            <th style="width: 100px">Type</th>
-                            <th style="width: 300px">{{ project.node_description }}</th>
-                            <th>Description</th>
-                        </thead>
-                        <tbody>
-                            {% for edge in edges %}
-                                <tr>
-                                    <td>{{ edge.get_type_display }}</td>
-                                    <td>{{ edge }}</td>
-                                    <td>{{ edge.description }}</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    {% endif %}
+                    <div id="edge-table">
+                        {% include 'edge_table.html' %}
+                    </div>
                 </div>
             </div>
         </div>
@@ -136,6 +102,26 @@
 
 {% block extra_script %}
 <script type="application/javascript">
+
+    function saveEdge () {
+        $.post('{% url 'edge_create' project.id %}', $('#edge-form').serialize(), function (data) {
+            $('#edge-table').html(data);
+        }).error(function (data) {
+            // pass
+        });
+    }
+
+    function saveNode () {
+        $.post('{% url 'node_create' project.id %}', $('#node-form').serialize(), function (data) {
+            $('#node-name-error').hide();
+            $('#node-table').html(data);
+        }).error(function (data) {
+            var errors = $.parseJSON(data.responseText).errors;
+            if (errors.indexOf('name') >= 0) {
+                $('#node-name-error').show();
+            }
+        });
+    }
 
     function updateLabels (selectEl) {
         if ($(selectEl).val() == '1') {
