@@ -55,7 +55,7 @@ class EditDataView(TemplateView):
         project = Project.objects.get(id=self.kwargs['project_id'])
         user = self.request.user
 
-        if user != project.owner and user not in project.collaborators:
+        if user != project.owner and user not in project.collaborators.all():
             raise PermissionDenied('Not authorised to edit this project!')
 
         context['project'] = project
