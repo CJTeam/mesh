@@ -82,13 +82,17 @@
 
         </div>
         <div class="span4" style="padding-top:50px">
-            {% if project %}
-                {% if user == project.owner or user in project.collaborators.all %}
-                    <a class="button-link" href="{% url 'edit_data' project.id %}">Enter Data ></a>
-                {% else %}
-                    <a class="button-link confirm-join" href="javascript:void">Join Project ></a>
-                {% endif %}
+        {% if project %}
+            {% if user == project.owner or user in project.collaborators.all %}
+            <a class="button-link" href="{% url 'edit_data' project.id %}">Enter Data ></a>
+            {% else %}
+            <a class="button-link confirm-join" href="javascript:void">Join Project ></a>
             {% endif %}
+            <br/><br/>
+            <a class="button-link" href="{% url 'project_graph' project.id %}">View Network Graph ></a>
+            <br/><br/>
+            <a class="button-link" href="{% url 'project_csv' project.id %}">Download CSV ></a>
+        {% endif %}
         </div>
      </div>
 

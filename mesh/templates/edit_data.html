@@ -29,6 +29,7 @@
                         </div>
                         <div class="control-group">
                             <div class="controls">
+                                <button type="button" onclick="window.location = '{% url 'project_update' project.id %}';" class="btn">Back</button>
                                 <button onclick="saveNode(); return false;" class="btn btn-success"><i class="icon-plus icon-white"></i> Add</button>
                             </div>
                         </div>
@@ -57,6 +58,7 @@
                             <label id="from-label" for="input-from" class="control-label">From</label>
                             <div class="controls">
                                 <select id="input-from" name="from_node">
+                                    <option value="" selected="selected"></option>
                                     {% for node in nodes %}
                                         <option value="{{ node.id }}">{{ node.name }}</option>
                                     {% endfor %}
@@ -67,6 +69,7 @@
                             <label id="to-label" for="input-to" class="control-label">To</label>
                             <div class="controls">
                                 <select id="input-to" name="to_node">
+                                    <option value="" selected="selected"></option>
                                     {% for node in nodes %}
                                         <option value="{{ node.id }}">{{ node.name }}</option>
                                     {% endfor %}
@@ -81,6 +84,7 @@
                         </div>
                         <div class="control-group">
                             <div class="controls">
+                                <button type="button" onclick="window.location = '{% url 'project_update' project.id %}';" class="btn">Back</button>
                                 <button onclick="saveEdge(); return false;" class="btn btn-success"><i class="icon-plus icon-white"></i> Add</button>
                             </div>
                         </div>
@@ -126,11 +130,18 @@
     }
 
     function saveEdge () {
+        if ($('#edge-form #input-from option:selected').val() === '' || $('#edge-form #input-to option:selected').val() === '') {
+            fadeError('Please select two {{ project.node_description }}');
+            return;
+        }
         $.post('{% url 'edge_create' project.id %}', $('#edge-form').serialize(), function (data) {
             $('#edge-table').html(data);
             var join = $('#edge-form #input-type').val() == '1' ? ' - ' : ' > ';
             var edge = $('#edge-form #input-from option:selected').text() + join + $('#edge-form #input-to option:selected').text();
             fadeSuccess(edge + ' added');
+            $('#edge-form #input-from').val('');
+            $('#edge-form #input-to').val('');
+            $('#edge-form #input-edge-description').val('');
         }).error(function (data) {
             // pass
         });
@@ -141,6 +152,7 @@
             $('#node-name-error').hide();
             $('#node-table').html(data);
             fadeSuccess($('#node-form #input-name').val() + ' added');
+            $('#node-form #input-name').val('');
         }).error(function (data) {
             var errors = $.parseJSON(data.responseText).errors;
             if (errors.indexOf('name') >= 0) {

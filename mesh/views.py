@@ -2,7 +2,7 @@ import json
 
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import redirect, render
 from django.contrib.sites.models import RequestSite
 from django.contrib.sites.models import Site
@@ -18,6 +18,7 @@ from registration.models import RegistrationProfile
 
 from mesh.forms import ProfileForm, ProjectForm, UserRegistrationForm, EdgeForm, NodeForm
 from mesh.models import Project, Edge, Node
+from mesh import util
 
 
 class BrowseProjectsView(TemplateView):
@@ -224,13 +225,6 @@ class ProjectCreateView(FormView):
     form_class = ProjectForm
     template_name = 'project.html'
 
-    """
-    def get_form_kwargs(self):
-        kwargs = super(ProjectCreateView, self).get_form_kwargs()
-        kwargs.update({'user' : self.request.user })
-        return kwargs
-    """
-
     def form_valid(self, form):
 
         project = Project()
@@ -247,6 +241,25 @@ class ProjectCreateView(FormView):
         return redirect('project_update', project_id=project.id)
 
 
+class ProjectCsvView(View):
+    def get(self, request, project_id):
+        project = Project.objects.get(id=project_id)
+        response = HttpResponse(mimetype='text/csv')
+        response['Content-Disposition'] = "attachment; filename={}.csv".format(project.name)
+        util.write_gephi_csv(response, project)
+        return response
+
+
+class ProjectGraphView(TemplateView):
+    template_name = 'project_graph.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ProjectGraphView, self).get_context_data(**kwargs)
+        context['project'] = project = Project.objects.get(id=kwargs['project_id'])
+        context['graph_json'] = util.project_graph_json(project)
+        return context
+
+
 class ProjectUpdateView(FormView):
     """
     Update existing project.
@@ -259,13 +272,6 @@ class ProjectUpdateView(FormView):
         project = Project.objects.get(id=project_id)
         form = ProjectForm(instance=project)
         return render(request, self.template_name, {'form' : form, 'project' : project})
-
-    """
-    def get_form_kwargs(self):
-        kwargs = super(ProjectUpdateView, self).get_form_kwargs()
-        kwargs.update({'user' : self.request.user })
-        return kwargs
-    """
 
     def post(self, request, project_id):
         form_class = self.get_form_class()

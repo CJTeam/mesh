@@ -21,8 +21,10 @@ urlpatterns = patterns('',
     url(r'^project/(?P<project_id>.*)/node/create$', login_required(NodeCreateView.as_view()), name='node_create'),
     url(r'^project/(?P<project_id>.*)/edge/create$', login_required(EdgeCreateView.as_view()), name='edge_create'),
     url(r'^project/(?P<project_id>.*)/collaborators/$', ProjectCollaboratorsView.as_view(), name='project_collaborators'),
+    url(r'^project/(?P<project_id>.*)/csv/$', ProjectCsvView.as_view(), name='project_csv'),
     url(r'^project/(?P<project_id>.*)/deactivate/$', DeactivateProjectView.as_view(), name='deactivate_project'),
     url(r'^project/(?P<project_id>.*)/join/$', JoinProjectView.as_view(), name='join_project'),
+    url(r'^project/(?P<project_id>.*)/graph/$', ProjectGraphView.as_view(), name='project_graph'),
     url(r'^project/(?P<project_id>.*)/$', ProjectUpdateView.as_view(), name='project_update'),
 
     # Registration
