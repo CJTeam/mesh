@@ -1,4 +1,6 @@
-import impl.value as value
+from impl.value import node_add as n_add
+from util.data import load
+from impl.loc import nodes
 
 def node_add(project, record): 
   print __name__ + ".node_add("+str(record)+","+str(project)+") : [create a node]"
@@ -6,7 +8,8 @@ def node_add(project, record):
   print "  . fail if 'Label' not unique."
   print "  . generate 'Id'"
   print "  . 'Nodes' value set to 'Label'"
-  value.node_add(project, record)
+  data = load(nodes(project))
+  n_add(data[0], data[1], record)
 
 def edge_add(values): 
   print __name__ + ".edge_create("+str(values)+") : [create an edge]"

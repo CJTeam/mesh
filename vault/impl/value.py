@@ -1,19 +1,11 @@
-from impl.loc import nodes
-from util.data import load
 from system.exit import fail
 #
-def node_add(project, record):
-    data = load(nodes(project))
-
-    # Ensure required values exist.
-    #
-    # (Label)
+def node_add(header, content, record):
     check_in_record("Label", record)
+    check_not_in_content("Label", record, content)
 
-    # Fail if record already exists.
-    #
-    # (Label,Id)
-    #
+
+    raise Exception("NOT IMPLEMENTED 3")
 
     label = value["Label"]
 
@@ -24,7 +16,11 @@ def node_add(project, record):
     fill_all_empty
 
 def check_in_record(k, d):
-  if not k in d: fail(k+" not found in "+str(d))
+  if not k in d: fail("'"+k+"' not found in "+str(d))
+
+def check_not_in_content(k, r, c):
+  for v in c:
+    if v[k] == r[k]: fail("record with '"+k+'='+r[k]+"' already exists")
 #
 #  block(attr, data[0])
 #
