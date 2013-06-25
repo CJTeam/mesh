@@ -3,6 +3,7 @@ import os.path as p
 
 from util.exit import fail
 from util.files import touch
+from util.files import create
 
 def local_create(name):
   store = "~/mesh"
@@ -21,5 +22,5 @@ def _create(store, name):
   git = p.expanduser(store)
   project = p.join(git, name)
   o.mkdir(project)
-  touch(project, "nodes.csv")
-  touch(project, "edges.csv")
+  create(project, "nodes.csv", "Id,Label")
+  create(project, "edges.csv", "Source,Target,Type,Id,Label,Weight")
