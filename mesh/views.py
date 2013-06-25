@@ -250,6 +250,15 @@ class ProjectCsvView(View):
         return response
 
 
+class ProjectGexfView(View):
+    def get(self, request, project_id):
+        project = Project.objects.get(id=project_id)
+        response = HttpResponse(mimetype='text/xml')
+        response['Content-Disposition'] = "attachment; filename={}.gexf".format(project.name)
+        util.write_gexf(response, project)
+        return response
+
+
 class ProjectGraphView(TemplateView):
     template_name = 'project_graph.html'
 
