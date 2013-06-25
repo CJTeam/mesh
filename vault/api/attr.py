@@ -1,8 +1,11 @@
+import impl.attr as attr
+
 def node_create(name): 
   print __name__ + ".node_create("+name+") : [create node attribute]"
   print "  . node table has immutable attributes {Nodes,Id,Label}."
   print "  . auto populate all entries with the empty value for this attribute."
   print "  . fail if node attribute with name '"+name+"' already exists."
+  attr.node_create(name)
 
 def edge_create(name): 
   print __name__ + ".edge_create("+name+") : [create edge attribute]"
