@@ -5,9 +5,10 @@
 #from util.files import touch
 #from util.files import create
 
+from loc import nodes
+import util.top as top
 
-
-def node_create(name):
-
-
-  raise Exception("not implemented");
+def node_create(project, attr):
+  cs = top.line(nodes(project))
+  print ("first line "+str(cs))
+  raise Exception("continue")

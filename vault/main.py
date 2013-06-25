@@ -15,7 +15,7 @@ sys.dont_write_bytecode = True
 store.local_create("g20_summit")
 
 # Add 'Country' attribute to the Node table.
-attr.node_create("Country")
+attr.node_create("g20_summit", "Country")
 
 # Add 'Relationship' attribute to the Edge table.
 attr.edge_create("Relationship")
