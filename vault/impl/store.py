@@ -1,26 +1,19 @@
-import os as o
 import os.path as p
 
+from loc import store
+from loc import project
+from loc import nodes
+from loc import edges
+
 from util.exit import fail
-from util.files import touch
 from util.files import create
+from util.files import mkdir
 
 def local_create(name):
-  store = "~/mesh"
-  _checks(store, name)
-  _create(store, name)
-
-def _checks(repos, name):
-  git = p.expanduser(repos)
-  if not p.isdir(git):
-    fail ("store area "+git+" does not exist")
-  candidate = p.join(git, name)
-  if p.exists(candidate):
-    fail ("store "+name+" already exists")
-
-def _create(store, name):
-  git = p.expanduser(store)
-  project = p.join(git, name)
-  o.mkdir(project)
-  create(project, "nodes.csv", "Id,Label")
-  create(project, "edges.csv", "Source,Target,Type,Id,Label,Weight")
+  if not p.isdir(store()):
+    fail ("store area "+store()+" does not exist")
+  if p.exists(project(name)):
+    fail ("store "+project(name)+" already exists")
+  mkdir(project(name))
+  create(nodes(name), "Id,Label")
+  create(edges(name), "Source,Target,Type,Id,Label,Weight")
