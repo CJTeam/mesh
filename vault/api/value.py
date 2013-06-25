@@ -11,3 +11,6 @@ def edge_create(values):
   print "  . fail if 'Type' not provided."
   print "  . fail if 'Weight' not provided."
   print "  . generate 'Id'"
+def node_update(value):
+  print __name__ + ".node_update("+str(value)+") : [update a node]"
+  print "  . fail if 'Id' not found in nodes."
