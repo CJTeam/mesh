@@ -1,14 +1,15 @@
-#import os as o
-#import os.path as p
+from impl.loc import nodes
+from util.data import load
+from system.exit import fail
 
-#from util.exit import fail
-#from util.files import touch
-#from util.files import create
+def node_add(project, attr):
+  data = load(nodes(project))
 
-from loc import nodes
-import util.top as top
+  block(attr, data[0])
 
-def node_create(project, attr):
-  cs = top.line(nodes(project))
-  print ("first line "+str(cs))
-  raise Exception("continue")
+  print(str(data))
+  raise Exception("NOT IMPLEMENTED")
+
+def block(new, exclude):
+  for v in exclude:
+    if new == v: fail("attribute '"+v+"' already exists '"+str(exclude)+"'")

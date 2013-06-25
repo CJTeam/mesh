@@ -14,6 +14,12 @@ sys.dont_write_bytecode = True
 # store.backed_create("https://github.com/susan/g20_summit.git")
 store.local_create("g20_summit")
 
+# Create a node
+#value.node_add([("Label","Obama"),("Country","US")])
+value.node_add("g20_summit", {"Label": "Obama", "Country": "US"})
+
+raise Exception("NOT IMPLEMENTED")
+
 # Add 'Country' attribute to the Node table.
 attr.node_create("g20_summit", "Country")
 
@@ -38,3 +44,7 @@ value.edge_create((("Source","Cameron"),("Target","Gillard"),("Type","Directed")
 
 #
 value.node_update((("Label","Gillard"),("Country","AU")))
+
+
+
+# TODO: Disallow "," in any values.

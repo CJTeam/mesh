@@ -1,9 +1,6 @@
-from util.files import lines
+from system.files import lines
 
 def load(f):
-
-  f = "/Users/mag/tmp/130__added_node__merkel_de__g20_summit.csv"
-
   with open(f, 'r') as x:
     rows = [v.strip() for v in x]
     fields = [v.split(",") for v in rows]
@@ -14,6 +11,7 @@ def load(f):
 def save(f, d):
 
   f = "/Users/mag/tmp/t.csv"
+  print "SAVING OVERRIDE "+f
 
   with open(f, 'w') as o:
     head = d[0]
