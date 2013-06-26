@@ -16,9 +16,9 @@ store.local_create("g20_summit")
 
 # Create a node
 #value.node_add([("Label","Obama"),("Country","US")])
-value.node_add("g20_summit", {"Label": "Obama", "Country": "US"})
+value.node_add("g20_summit", {"Label": "Obama"})
 
-raise Exception("NOT IMPLEMENTED")
+raise Exception("NOT IMPLEMENTED main")
 
 # Add 'Country' attribute to the Node table.
 attr.node_create("g20_summit", "Country")
