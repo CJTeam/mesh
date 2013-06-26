@@ -2,7 +2,7 @@ import os
 
 # Django settings for mesh project.
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 PROJECT_DIR = os.path.dirname(__file__)
