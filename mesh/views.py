@@ -317,8 +317,9 @@ class RegistrationView(RegistrationView):
             site = Site.objects.get_current()
         else:
             site = RequestSite(request)
-        new_user = RegistrationProfile.objects.create_inactive_user(username, email,
-                                                                    password, site)
+
+        #new_user = RegistrationProfile.objects.create_active_user(username, email, password, site)
+        new_user = User.objects.create_user(username, email, password)
 
         # Set extra fields
         new_user.first_name = first_name
@@ -329,3 +330,8 @@ class RegistrationView(RegistrationView):
                                      user=new_user,
                                      request=request)
         return new_user
+
+
+class RegistrationCompleteView(TemplateView):
+    template_name = 'registration/activation_complete.html'
+

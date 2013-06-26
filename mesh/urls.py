@@ -32,7 +32,8 @@ urlpatterns = patterns('',
     # Registration
     url(r'^accounts/profile/$', ProfileView.as_view(), name='profile'),
     url(r'^accounts/register/$', RegistrationView.as_view(), name='registration_register'),
-    (r'^accounts/', include('registration.backends.default.urls')),
+    url(r'^accounts/registration_complete$', RegistrationCompleteView.as_view(), name='registration_complete'),
+    (r'^accounts/', include('registration.backends.simple.urls')),
 
     url(r'^login/$', auth_views.login, {'template_name': 'registration/login.html'}, name='auth_login'),
     url(r'^logout/$', auth_views.logout, {'template_name': 'registration/logout.html'}, name='auth_logout'),
@@ -40,7 +41,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 )
 
-if settings.HEROKU:
+if getattr(settings, 'HEROKU', False):
     urlpatterns += patterns('',
         (r'^static/(?P<path>.*)$', 'django.views.static.serve' , {'document_root': settings.STATIC_ROOT}),
     )

@@ -1,6 +1,8 @@
 # DB
 db
 
+settings.py
+
 *.pyc
 
 # C extensions
