@@ -1,6 +1,9 @@
 from system.files import lines
 
 def load(f):
+
+  f = "/Users/mag/tmp/nodes.csv"
+
   with open(f, 'r') as x:
     rows = [v.strip() for v in x]
     fields = [v.split(",") for v in rows]
