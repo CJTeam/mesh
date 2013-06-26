@@ -11,6 +11,7 @@ def node_add(header, content, record):
     print(record)
     record_add("Id", nid, record)
     print(record)
+    check_no_stragglers(record, header)
 
     raise Exception("NOT IMPLEMENTED 3")
 
@@ -34,6 +35,10 @@ def check_not_in_content(k, r, c):
   for v in c:
     if v[k] == r[k]: fail("record with '"+k+'='+r[k]+"' already exists")
 
+def check_no_stragglers(m, ks):
+  r = remainder_of(m, ks)
+  if r: fail ("spurious keys '"+str(r)+"' in '"+str(m)+"'")
+
 def get_all(k, d):
   return [v[k] for v in d]
 
@@ -45,6 +50,10 @@ def next_id(ids):
 def record_add(k, v, record):
   if k in record: fail("record should not already have key '"+k+"' value '"+record[k]+"'")
   record[k] = v
+
+def remainder_of(m, ks):
+  mks = m.keys()
+  return list(set(mks) - set(ks))
 
 #
 #  block(attr, data[0])
