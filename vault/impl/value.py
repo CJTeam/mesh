@@ -8,6 +8,9 @@ def node_add(header, content, record):
     ids = get_all("Id", content)
     nid = next_id(ids)
     print(nid)
+    print(record)
+    record_add("Id", nid, record)
+    print(record)
 
     raise Exception("NOT IMPLEMENTED 3")
 
@@ -38,6 +41,11 @@ def next_id(ids):
   if not ids: return 1000
   nids = map(int, ids)
   return sorted(nids)[-1] + 1
+
+def record_add(k, v, record):
+  if k in record: fail("record should not already have key '"+k+"' value '"+record[k]+"'")
+  record[k] = v
+
 #
 #  block(attr, data[0])
 #
