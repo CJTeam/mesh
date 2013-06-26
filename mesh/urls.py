@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
@@ -38,3 +39,8 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
 )
+
+if not settings.DEBUG:
+    urlpatterns += patterns('',
+        (r'^static/(?P<path>.*)$', 'django.contrib.staticfiles.views' , {'document_root': settings.STATIC_ROOT}),
+    )
