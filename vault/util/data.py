@@ -3,6 +3,7 @@ from system.files import lines
 def load(f):
 
   f = "/Users/mag/tmp/nodes.csv"
+  print "LOADING OVERRIDE "+f
 
   with open(f, 'r') as x:
     rows = [v.strip() for v in x]

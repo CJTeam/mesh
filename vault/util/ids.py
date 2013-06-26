@@ -2,7 +2,7 @@ from util.content import get_all
 
 def next_id(content):
     ids = get_all("Id", content)
-    nid = bump_id(ids)
+    return bump_id(ids)
 
 def bump_id(ids):
   if not ids: return 1000
