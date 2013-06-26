@@ -4,6 +4,7 @@ import os
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+HEROKU = True
 
 PROJECT_DIR = os.path.dirname(__file__)
 

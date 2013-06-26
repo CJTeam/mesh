@@ -40,7 +40,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 )
 
-if not settings.DEBUG:
+if settings.HEROKU:
     urlpatterns += patterns('',
         (r'^static/(?P<path>.*)$', 'django.contrib.staticfiles.views' , {'document_root': settings.STATIC_ROOT}),
     )
