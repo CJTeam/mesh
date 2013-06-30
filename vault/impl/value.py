@@ -57,8 +57,8 @@ def edge_add_record(nheader, ncontent, eheader, econtent, record):
 def node_del_record(nheader, ncontent, eheader, econtent, label):
     record = get_record("Label", label, ncontent) 
     check_in_record("Label", record)
-    check_not_in_content("edge", "Source", label, ncontent)
-    check_not_in_content("edge", "Target", label, ncontent)
+    check_not_in_content("edge", "Source", label, econtent)
+    check_not_in_content("edge", "Target", label, econtent)
     raise Exception("COMPLETE node delete")
     
 
