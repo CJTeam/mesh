@@ -11,12 +11,14 @@ def check_in_content(m, k, v, c):
   if in_content(k, v, c): fail(m+" with '"+k+'='+v+"' does not exist")
 
 def check_not_in_content(m, k, v, c):
-  if not in_content(k, v, c): fail(m+" with '"+k+'='+v+"' already exists")
+  if not in_content(k, v, c): fail(m+" with '"+k+'='+v+"' exists")
 
 def in_content(k, v, c):
-  return not reduce(lambda x, y: x or ((k in y) and (y[k] == v)), c, False)
+  return not reduce(lambda a, x: a or map_val_eq(k, v, x), c, False)
 
 def check_no_stragglers(m, ks):
   r = remainder_of(m, ks)
   if r: fail ("spurious keys '"+str(r)+"' in '"+str(m)+"'")
 
+def map_val_eq(k, v, m):
+  return k in m and (m[k] == v)

@@ -11,6 +11,7 @@ from util.data import save
 from util.ids import next_id
 from util.records import record_add
 from util.content import content_add
+from util.content import get_record
 
 def node_create(project, record):
   n = nodes(project)
@@ -23,9 +24,16 @@ def edge_create(project, record):
   n = nodes(project)
   edata = load(e)
   ndata = load(n)
-  edge_add_record(edata[0], edata[1], ndata[0], ndata[1], record)
+  edge_add_record(ndata[0], ndata[1], edata[0], edata[1], record)
   save(e, edata)
 
+def node_delete(project, label):
+  e = edges(project)
+  n = nodes(project)
+  edata = load(e)
+  ndata = load(n)
+  node_del_record(ndata[0], ndata[1], edata[0], edata[1], label)
+  save(n, ndata)
 
 def node_add_record(header, content, record):
     check_in_record("Label", record)
@@ -35,7 +43,7 @@ def node_add_record(header, content, record):
     content_add(record, content)
     check_no_stragglers(record, header)
 
-def edge_add_record(eheader, econtent, nheader, ncontent, record):
+def edge_add_record(nheader, ncontent, eheader, econtent, record):
     check_in_record("Source", record)
     check_in_record("Target", record)
     check_in_record("Type", record)
@@ -45,3 +53,12 @@ def edge_add_record(eheader, econtent, nheader, ncontent, record):
     check_in_content("node", "Label", record["Target"], ncontent)
     content_add(record, econtent)
     check_no_stragglers(record, eheader)
+
+def node_del_record(nheader, ncontent, eheader, econtent, label):
+    record = get_record("Label", label, ncontent) 
+    check_in_record("Label", record)
+    check_not_in_content("edge", "Source", label, ncontent)
+    check_not_in_content("edge", "Target", label, ncontent)
+    raise Exception("COMPLETE node delete")
+    
+

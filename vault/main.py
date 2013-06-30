@@ -40,6 +40,8 @@ value.edge_create("g20_summit", {"Source": "Ayrault", "Target": "Ayrault", "Type
 value.edge_create("g20_summit", {"Source": "Cameron", "Target": "Cameron", "Type": "Undirected", "Label": "UK-UK", "Weight": "0", "Relationship": "Self"})
 value.edge_create("g20_summit", {"Source": "Abdullah", "Target": "Abdullah", "Type": "Undirected", "Label": "SA-SA", "Weight": "0", "Relationship": "Self"})
 
+value.node_delete("g20_summit", "Obama")
+
 raise Exception("NOT IMPLEMENTED main")
 
 value.node_update("g20_summit", {"Label": "Obama", "Country": "US"})

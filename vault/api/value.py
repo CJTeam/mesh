@@ -1,5 +1,6 @@
 from impl.value import node_create as n_create
 from impl.value import edge_create as e_create
+from impl.value import node_delete as n_delete
 
 def node_create(project, record): 
   n_create(project, record)
@@ -13,4 +14,8 @@ def node_update(value):
 
 # edge_update
 # node_delete
+def node_delete(project, label):
+  n_delete(project, label)
+
 # edge_delete
+
