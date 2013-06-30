@@ -3,6 +3,7 @@ from impl.loc import edges
 from system.exit import fail
 from util.checks import check_in_record
 from util.checks import check_not_in_record
+from util.checks import check_in_content
 from util.checks import check_not_in_content
 from util.checks import check_no_stragglers
 from util.data import load
@@ -23,11 +24,6 @@ def edge_create(project, record):
   edata = load(e)
   ndata = load(n)
   edge_add_record(edata[0], edata[1], ndata[0], ndata[1], record)
-#  fail if 'Source' not found in nodes."
-#  fail if 'Target' not found in nodes."
-#  fail if 'Type' not provided."
-#  fail if 'Weight' not provided."
-#  generate 'Id'"
   raise Exception("TO IMPLEMENT ... edge create")
   save(e, edges)
 
@@ -35,14 +31,16 @@ def edge_create(project, record):
 def node_add_record(header, content, record):
     check_in_record("Label", record)
     check_not_in_record("Id", record)
-    check_not_in_content("Label", record, content)
+    check_not_in_content("Label", record["Label"], content)
     record_add("Id", str(next_id(content)), record)
     content_add(record, content)
     check_no_stragglers(record, header)
 
-def edge_add_record(eheader, econtent, sheader, scontent, record):
+def edge_add_record(eheader, econtent, nheader, ncontent, record):
     check_in_record("Source", record)
     check_in_record("Target", record)
     check_in_record("Type", record)
     check_in_record("Label", record)
     check_in_record("Weight", record)
+    check_in_content("Label", record["Source"], ncontent)
+    check_in_content("Label", record["Target"], ncontent)
