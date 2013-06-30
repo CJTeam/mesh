@@ -24,8 +24,7 @@ def edge_create(project, record):
   edata = load(e)
   ndata = load(n)
   edge_add_record(edata[0], edata[1], ndata[0], ndata[1], record)
-  raise Exception("TO IMPLEMENT ... edge create")
-  save(e, edges)
+  save(e, edata)
 
 
 def node_add_record(header, content, record):
@@ -44,3 +43,5 @@ def edge_add_record(eheader, econtent, nheader, ncontent, record):
     check_in_record("Weight", record)
     check_in_content("node", "Label", record["Source"], ncontent)
     check_in_content("node", "Label", record["Target"], ncontent)
+    content_add(record, econtent)
+    check_no_stragglers(record, eheader)
