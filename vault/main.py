@@ -20,10 +20,10 @@ value.node_create("g20_summit", {"Label": "Obama"})
 # Add 'Country' attribute to the Node table.
 attr.node_create("g20_summit", "Country")
 
-raise Exception("NOT IMPLEMENTED main")
-
 # Add 'Relationship' attribute to the Edge table.
-attr.edge_create("Relationship")
+attr.edge_create("g20_summit", "Relationship")
+
+raise Exception("NOT IMPLEMENTED main")
 
 # Build Nodes.
 value.node_create((("Label","Obama"),("Country","US")))
