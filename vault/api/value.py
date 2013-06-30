@@ -1,7 +1,7 @@
-from impl.value import node_create as create
+from impl.value import node_create as n_create
 
 def node_create(project, record): 
-  create(project, record)
+  n_create(project, record)
 
 def edge_add(values): 
   print __name__ + ".edge_create("+str(values)+") : [create an edge]"
