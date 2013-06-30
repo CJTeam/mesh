@@ -42,9 +42,14 @@ value.edge_create("g20_summit", {"Source": "Abdullah", "Target": "Abdullah", "Ty
 
 value.edge_create("g20_summit", {"Source": "Gillard", "Target": "Obama", "Type": "Directed", "Label": "AU-US", "Weight": "30", "Relationship": "Friendly"})
 
-value.node_delete("g20_summit", "Obama")
+value.edge_delete("g20_summit", "Gillard", "Obama")
+#value.node_delete("g20_summit", "Obama")
 
 raise Exception("NOT IMPLEMENTED main")
+
+#
+# LATER
+#
 
 value.node_update("g20_summit", {"Label": "Obama", "Country": "US"})
 
