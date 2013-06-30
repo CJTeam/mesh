@@ -43,6 +43,8 @@ def node_add_record(header, content, record):
     check_no_stragglers(record, header)
 
 def edge_add_record(nheader, ncontent, eheader, econtent, record):
+    # TODO: Ensure there is no matching edge already.
+    # TODO: Add Id.
     check_in_record("Source", record)
     check_in_record("Target", record)
     check_in_record("Type", record)
