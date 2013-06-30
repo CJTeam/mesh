@@ -31,7 +31,7 @@ def edge_create(project, record):
 def node_add_record(header, content, record):
     check_in_record("Label", record)
     check_not_in_record("Id", record)
-    check_not_in_content("Label", record["Label"], content)
+    check_not_in_content("node", "Label", record["Label"], content)
     record_add("Id", str(next_id(content)), record)
     content_add(record, content)
     check_no_stragglers(record, header)
@@ -42,5 +42,5 @@ def edge_add_record(eheader, econtent, nheader, ncontent, record):
     check_in_record("Type", record)
     check_in_record("Label", record)
     check_in_record("Weight", record)
-    check_in_content("Label", record["Source"], ncontent)
-    check_in_content("Label", record["Target"], ncontent)
+    check_in_content("node", "Label", record["Source"], ncontent)
+    check_in_content("node", "Label", record["Target"], ncontent)
