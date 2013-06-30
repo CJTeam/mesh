@@ -17,6 +17,9 @@ store.local_create("g20_summit")
 # Create a node
 value.node_create("g20_summit", {"Label": "Obama"})
 
+# Create an edge 
+value.edge_create("g20_summit", {"Source": "Obama", "Target": "Obama", "Type": "Undirected", "Label": "self", "Weight": "0"})
+
 # Add 'Country' attribute to the Node table.
 attr.node_create("g20_summit", "Country")
 

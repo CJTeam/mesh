@@ -1,4 +1,5 @@
 from impl.loc import nodes
+from impl.loc import edges
 from util.data import load
 from util.data import save
 from system.exit import fail

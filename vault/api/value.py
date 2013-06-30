@@ -1,15 +1,11 @@
 from impl.value import node_create as n_create
+from impl.value import edge_create as e_create
 
 def node_create(project, record): 
   n_create(project, record)
 
-def edge_add(values): 
-  print __name__ + ".edge_create("+str(values)+") : [create an edge]"
-  print "  . fail if 'Source' not found in nodes."
-  print "  . fail if 'Target' not found in nodes."
-  print "  . fail if 'Type' not provided."
-  print "  . fail if 'Weight' not provided."
-  print "  . generate 'Id'"
+def edge_create(project, record): 
+  e_create(project, record)
 
 def node_update(value):
   print __name__ + ".node_update("+str(value)+") : [update a node]"

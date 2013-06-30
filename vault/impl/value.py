@@ -16,6 +16,15 @@ def node_create(project, record):
   node_add_record(data[0], data[1], record)
   save(n, data)
 
+def edge_create(project, record):
+#  fail if 'Source' not found in nodes."
+#  fail if 'Target' not found in nodes."
+#  fail if 'Type' not provided."
+#  fail if 'Weight' not provided."
+#  generate 'Id'"
+  raise Exception("TO IMPLEMENT ... edge create")
+
+
 def node_add_record(header, content, record):
     check_in_record("Label", record)
     check_not_in_record("Id", record)
