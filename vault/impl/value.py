@@ -13,10 +13,10 @@ from util.content import content_add
 def node_create(project, record):
   n = nodes(project)
   data = load(n)
-  node_add_content(data[0], data[1], record)
+  node_add_record(data[0], data[1], record)
   save(n, data)
 
-def node_add_content(header, content, record):
+def node_add_record(header, content, record):
     check_in_record("Label", record)
     check_not_in_record("Id", record)
     check_not_in_content("Label", record, content)
