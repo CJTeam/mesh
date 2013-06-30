@@ -41,17 +41,19 @@ value.edge_create("g20_summit", {"Source": "Cameron", "Target": "Cameron", "Type
 value.edge_create("g20_summit", {"Source": "Abdullah", "Target": "Abdullah", "Type": "Undirected", "Label": "SA-SA", "Weight": "0", "Relationship": "Self"})
 
 value.edge_create("g20_summit", {"Source": "Gillard", "Target": "Obama", "Type": "Directed", "Label": "AU-US", "Weight": "30", "Relationship": "Friendly"})
+# TODO: Complete edge relationships.
 
+# TODO: Move to end once update complete.
 value.edge_delete("g20_summit", "Gillard", "Obama")
-#value.node_delete("g20_summit", "Obama")
+value.edge_delete("g20_summit", "Obama", "Obama")
+value.node_delete("g20_summit", "Obama")
 
 raise Exception("NOT IMPLEMENTED main")
+
+value.node_update("g20_summit", {"Label": "Obama", "Country": "US"})
 
 #
 # LATER
 #
 
-value.node_update("g20_summit", {"Label": "Obama", "Country": "US"})
-
-# TODO: Complete edge relationships.
 # TODO: Ensure checks are performed on edge "Type" {Undirected,Directed}
