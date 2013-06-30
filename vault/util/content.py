@@ -4,7 +4,7 @@ def get_values(k, c):
   return [v[k] for v in c]
 
 def get_records(k, v, c):
-  return reduce(lambda a, x: list(chain(a, record_match(k, v, x))), c, [])
+  return reduce(lambda a, x: list(chain(a, [x] if record_match(k, v, x) else [])), c, [])
 
 def get_record(k, v, c):
   r = get_records(k, v, c)
@@ -19,5 +19,5 @@ def content_add(record, content):
   content.append(record)
 
 def record_match(k, v, r):
-  if k in r and (r[k] == v): return [r]
-  else: return []
+  if k in r and (r[k] == v): return True
+  else: return False  
