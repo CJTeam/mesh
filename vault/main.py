@@ -15,7 +15,6 @@ sys.dont_write_bytecode = True
 store.local_create("g20_summit")
 
 # Create a node
-#value.node_add([("Label","Obama"),("Country","US")])
 value.node_create("g20_summit", {"Label": "Obama"})
 
 # Add 'Country' attribute to the Node table.

@@ -1,15 +1,14 @@
 from impl.loc import nodes
 from util.data import load
+from util.data import save
 from system.exit import fail
 
 def node_create(project, attr):
-  raise Exception("NOT IMPLEMENTED")
-  data = load(nodes(project))
+  n = nodes(project)
+  data = load(n)
+  node_add_attr(data[0], attr)
+  save(n, data)
 
-  block(attr, data[0])
-
-  print(str(data))
-
-def block(new, exclude):
-  for v in exclude:
-    if new == v: fail("attribute '"+v+"' already exists '"+str(exclude)+"'")
+def node_add_attr(header, attr):
+  if attr in header: fail("node attribute '"+attr+"' already exists "+str(header))
+  header.append(attr) 
