@@ -28,7 +28,12 @@ def edge_create(project, record):
   save(e, edata)
 
 def node_update(project, record):
-  raise Exception("node_update COMPLETE");
+  e = edges(project)
+  n = nodes(project)
+  edata = load(e)
+  ndata = load(n)
+  node_upd_record(ndata[0], ndata[1], edata[0], edata[1], record)
+  save(n, ndata)
 
 def edge_update(project, record):
   raise Exception("edge_update COMPLETE");
@@ -67,6 +72,11 @@ def edge_add_record(nheader, ncontent, eheader, econtent, record):
   check_in_content("node", "Label", record["Target"], ncontent)
   econtent.append(record)
   check_no_stragglers(record, eheader)
+
+def node_upd_record(nheader, ncontent, eheader, econtent, record):
+  existing = get_record("Label", record["Label"], ncontent)
+  ncontent.remove(existing)
+  node_add_record(nheader, ncontent, record)
 
 def node_del_record(nheader, ncontent, eheader, econtent, label):
   record = get_record("Label", label, ncontent) 

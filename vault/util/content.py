@@ -1,4 +1,6 @@
 from itertools import chain
+from system.exit import fail
+
 # TODO: Move out
 def get_values(k, c):
   return [v[k] for v in c]
@@ -12,7 +14,8 @@ def exclude_records(k, v, c):
 
 def get_record(k, v, c):
   r = get_records(k, v, c)
-  if len(r) != 1: fail("expected one record but found multiple with key '"+k+"' and value '"+v+"'")
+  if len(r) == 0: fail("no record found with key '"+k+"' and value '"+v+"'")
+  if len(r) >  1: fail("expected one record but found multiple with key '"+k+"' and value '"+v+"'")
   return r[0]
 
 def record_match(k, v, r):
