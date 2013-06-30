@@ -35,6 +35,8 @@ value.node_create("g20_summit", {"Label": "Abdullah", "Country": "SA"})
 
 raise Exception("NOT IMPLEMENTED main")
 
+value.node_update("g20_summit", {"Label": "Obama", "Country": "US"})
+
 # Build Edges
 value.edge_create((("Source","Obama"),("Target","Gillard"),("Type","Directed"),("Label","US-AU"),("Weight",10),("Relationship","Cordial")))
 value.edge_create((("Source","Obama"),("Target","Cameron"),("Type","Directed"),("Label","US-UK"),("Weight",50),("Relationship","Friendly")))
