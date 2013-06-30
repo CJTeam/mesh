@@ -2,13 +2,13 @@ from impl.loc import nodes
 from util.data import load
 from system.exit import fail
 
-def node_add(project, attr):
+def node_create(project, attr):
+  raise Exception("NOT IMPLEMENTED")
   data = load(nodes(project))
 
   block(attr, data[0])
 
   print(str(data))
-  raise Exception("NOT IMPLEMENTED")
 
 def block(new, exclude):
   for v in exclude:

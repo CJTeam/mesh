@@ -10,12 +10,10 @@ from util.ids import next_id
 from util.records import record_add
 from util.content import content_add
 
-def node_add(project, record):
+def node_create(project, record):
   n = nodes(project)
   data = load(n)
-  print(record)
   node_add_content(data[0], data[1], record)
-  print(record)
   save(n, data)
 
 def node_add_content(header, content, record):

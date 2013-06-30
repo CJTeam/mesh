@@ -2,8 +2,8 @@ from system.files import lines
 
 def load(f):
 
-  f = "/Users/mag/tmp/nodes.csv"
-  print "LOADING OVERRIDE "+f
+#  f = "/Users/mag/tmp/nodes.csv"
+#  print "LOADING OVERRIDE "+f
 
   with open(f, 'r') as x:
     rows = [v.strip() for v in x]
@@ -14,8 +14,8 @@ def load(f):
 
 def save(f, d):
 
-  f = "/Users/mag/tmp/t.csv"
-  print "SAVING OVERRIDE "+f
+#  f = "/Users/mag/tmp/t.csv"
+#  print "SAVING OVERRIDE "+f
 
   with open(f, 'w') as o:
     head = d[0]

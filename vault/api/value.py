@@ -1,12 +1,7 @@
-from impl.value import node_add as n_add
+from impl.value import node_create as create
 
-def node_add(project, record): 
-  print __name__ + ".node_add("+str(record)+","+str(project)+") : [create a node]"
-  print "  . fail if 'Label' not provided."
-  print "  . fail if 'Label' not unique."
-  print "  . generate 'Id'"
-  print "  . 'Nodes' value set to 'Label'"
-  n_add(project, record)
+def node_create(project, record): 
+  create(project, record)
 
 def edge_add(values): 
   print __name__ + ".edge_create("+str(values)+") : [create an edge]"

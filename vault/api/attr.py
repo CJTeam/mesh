@@ -1,6 +1,6 @@
 import impl.attr as attr
 
-def node_add(project, name): 
+def node_create(project, name): 
   print __name__ + ".node_add("+project+","+name+") : [create node attribute for project]"
   print "  . node table has immutable attributes {Nodes,Id,Label}."
   print "  . auto populate all entries with the empty value for this attribute."
