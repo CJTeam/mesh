@@ -26,15 +26,14 @@ attr.node_create("g20_summit", "Country")
 # Add 'Relationship' attribute to the Edge table.
 attr.edge_create("g20_summit", "Relationship")
 
-raise Exception("NOT IMPLEMENTED main")
-
 # Build Nodes.
-value.node_create((("Label","Obama"),("Country","US")))
-value.node_create((("Label","Gillard")))
-value.node_create((("Label","Merkel"),("Country","DE")))
-value.node_create((("Label","Ayrault"),("Country","FR")))
-value.node_create((("Label","Cameron"),("Country","UK")))
-value.node_create((("Label","Abdullah"),("Country","SA")))
+value.node_create("g20_summit", {"Label": "Gillard" , "Country": "AU"})
+value.node_create("g20_summit", {"Label": "Merkel"  , "Country": "DE"})
+value.node_create("g20_summit", {"Label": "Ayrault" , "Country": "FR"})
+value.node_create("g20_summit", {"Label": "Cameron" , "Country": "UK"})
+value.node_create("g20_summit", {"Label": "Abdullah", "Country": "SA"})
+
+raise Exception("NOT IMPLEMENTED main")
 
 # Build Edges
 value.edge_create((("Source","Obama"),("Target","Gillard"),("Type","Directed"),("Label","US-AU"),("Weight",10),("Relationship","Cordial")))
