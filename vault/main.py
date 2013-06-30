@@ -42,8 +42,11 @@ value.edge_create("g20_summit", {"Source": "Abdullah", "Target": "Abdullah", "Ty
 
 value.edge_create("g20_summit", {"Source": "Gillard", "Target": "Obama", "Type": "Directed", "Label": "AU-US", "Weight": "30", "Relationship": "Friendly"})
 # TODO: Complete edge relationships.
+# TODO: UPDATES MUST KEEP THE SAME ID!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 value.node_update("g20_summit", {"Label": "Obama", "Country": "US"})
+
+value.edge_update("g20_summit", {"Source": "Obama", "Target": "Obama", "Type": "Undirected", "Label": "US-US", "Weight": "0", "Relationship": "Self"})
 
 raise Exception("NOT IMPLEMENTED main")
 
