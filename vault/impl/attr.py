@@ -4,11 +4,16 @@ from util.data import save
 from system.exit import fail
 
 def node_create(project, attr):
-  n = nodes(project)
-  data = load(n)
-  node_add_attr(data[0], attr)
-  save(n, data)
+  create("node", nodes(project), attr)
 
-def node_add_attr(header, attr):
-  if attr in header: fail("node attribute '"+attr+"' already exists "+str(header))
+def edge_create(project, attr):
+  create("edge", edges(project), attr)
+
+def create(which, f, attr):
+  data = load(f)
+  create_it(which, data[0], attr)
+  save(f, data)
+
+def create_it(which, header, attr):
+  if attr in header: fail(which+" attribute '"+attr+"' already exists "+str(header))
   header.append(attr) 
