@@ -40,26 +40,7 @@ value.edge_create("g20_summit", {"Source": "Ayrault", "Target": "Ayrault", "Type
 value.edge_create("g20_summit", {"Source": "Cameron", "Target": "Cameron", "Type": "Undirected", "Label": "UK-UK", "Weight": "0", "Relationship": "Self"})
 value.edge_create("g20_summit", {"Source": "Abdullah", "Target": "Abdullah", "Type": "Undirected", "Label": "SA-SA", "Weight": "0", "Relationship": "Self"})
 
-# TODO: DELETE FOLLOWING ADD AS IT IS A TEST ONLY
-value.node_create("g20_summit", {"Label": "Testicicle" , "Country": "IC"})
-value.node_delete("g20_summit", "Testicicle")
-
 raise Exception("NOT IMPLEMENTED main")
 
 value.node_update("g20_summit", {"Label": "Obama", "Country": "US"})
 value.edge_update("g20_summit", {"Source": "Obama", "Target": "Obama", "Type": "Undirected", "Label": "US-US", "Weight": "0", "Relationship": "Self"})
-
-# Build Edges
-value.edge_create((("Source","Obama"),("Target","Gillard"),("Type","Directed"),("Label","US-AU"),("Weight",10),("Relationship","Cordial")))
-value.edge_create((("Source","Obama"),("Target","Cameron"),("Type","Directed"),("Label","US-UK"),("Weight",50),("Relationship","Friendly")))
-value.edge_create((("Source","Gillard"),("Target","Obama"),("Type","Directed"),("Label","AU-US"),("Weight",50),("Relationship","Friendly")))
-value.edge_create((("Source","Gillard"),("Target","Cameron"),("Type","Directed"),("Label","AU-UK"),("Weight",30),("Relationship","Close")))
-value.edge_create((("Source","Cameron"),("Target","Obama"),("Type","Directed"),("Label","UK-US"),("Weight",50),("Relationship","Close")))
-value.edge_create((("Source","Cameron"),("Target","Gillard"),("Type","Directed"),("Label","UK-AU"),("Weight",30),("Relationship","Friendly")))
-
-#
-value.node_update((("Label","Gillard"),("Country","AU")))
-
-
-
-# TODO: Disallow "," in any values.

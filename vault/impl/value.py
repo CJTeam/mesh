@@ -10,7 +10,6 @@ from util.data import load
 from util.data import save
 from util.ids import next_id
 from util.records import record_add
-from util.content import content_add
 from util.content import get_record
 
 def node_create(project, record):
@@ -40,7 +39,7 @@ def node_add_record(header, content, record):
     check_not_in_record("Id", record)
     check_not_in_content("node", "Label", record["Label"], content)
     record_add("Id", str(next_id(content)), record)
-    content_add(record, content)
+    content.append(record)
     check_no_stragglers(record, header)
 
 def edge_add_record(nheader, ncontent, eheader, econtent, record):
@@ -51,7 +50,7 @@ def edge_add_record(nheader, ncontent, eheader, econtent, record):
     check_in_record("Weight", record)
     check_in_content("node", "Label", record["Source"], ncontent)
     check_in_content("node", "Label", record["Target"], ncontent)
-    content_add(record, econtent)
+    econtent.append(record)
     check_no_stragglers(record, eheader)
 
 def node_del_record(nheader, ncontent, eheader, econtent, label):
@@ -59,6 +58,4 @@ def node_del_record(nheader, ncontent, eheader, econtent, label):
     check_in_record("Label", record)
     check_not_in_content("edge", "Source", label, econtent)
     check_not_in_content("edge", "Target", label, econtent)
-    raise Exception("COMPLETE node delete")
-    
-
+    ncontent.remove(record)
