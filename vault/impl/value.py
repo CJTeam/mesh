@@ -11,10 +11,10 @@ from util.records import record_add
 from util.content import content_add
 
 def node_create(project, record):
-  n = nodes(project)
-  data = load(n)
+  f = nodes(project)
+  data = load(f)
   node_add_record(data[0], data[1], record)
-  save(n, data)
+  save(f, data)
 
 def edge_create(project, record):
 #  fail if 'Source' not found in nodes."
