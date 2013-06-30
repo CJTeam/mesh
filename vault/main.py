@@ -48,9 +48,9 @@ value.edge_delete("g20_summit", "Gillard", "Obama")
 value.edge_delete("g20_summit", "Obama", "Obama")
 value.node_delete("g20_summit", "Obama")
 
-raise Exception("NOT IMPLEMENTED main")
-
 value.node_update("g20_summit", {"Label": "Obama", "Country": "US"})
+
+raise Exception("NOT IMPLEMENTED main")
 
 #
 # LATER

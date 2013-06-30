@@ -27,6 +27,12 @@ def edge_create(project, record):
   edge_add_record(ndata[0], ndata[1], edata[0], edata[1], record)
   save(e, edata)
 
+def node_update(project, record):
+  raise Exception("node_update COMPLETE");
+
+def edge_update(project, record):
+  raise Exception("edge_update COMPLETE");
+
 def node_delete(project, label):
   e = edges(project)
   n = nodes(project)
