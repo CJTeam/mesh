@@ -14,7 +14,14 @@
         <br/><br/>
     </div>
     <div class="row-fluid" id="msg-row" style="display:none">
-        <p>No data to display. Click <a href="{% url 'edit_data' project.id %}">here</a> to enter data.<p>
+        <p>
+            No data to display.
+            {% if user == project.owner or user in project.collaborators.all %}
+            Click <a href="{% url 'edit_data' project.id %}">here</a> to enter data.
+            {% else %}
+            Click <a href="{% url 'project_update' project.id %}">here</a> to return.
+            {% endif %}
+        <p>
     </div>
 
 {% endblock %}
