@@ -90,6 +90,26 @@ class NodeCreateView(CreateView):
         return reverse_lazy('node_table', kwargs=self.kwargs)
 
 
+class NodeDeleteView(View):
+    """
+    Delete a list of nodes.
+
+    """
+    def post(self, request, project_id):
+        project = Project.objects.get(id=project_id)
+
+        if project.owner <> request.user:
+                raise PermissionDenied()
+
+        nodes = Node.objects.filter(id__in=request.POST.getlist('node_id'))
+        num_nodes = len(nodes)
+        if num_nodes > 0:
+            nodes.delete()
+            messages.info(self.request, '{} {} deleted'.format(num_nodes, project.node_description))
+
+        return redirect('edit_data', project_id=project_id)
+
+
 class NodeTableView(TemplateView):
     """
     HTML fragment for project node table.
@@ -99,7 +119,7 @@ class NodeTableView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(NodeTableView, self).get_context_data(**kwargs)
-        project = Project.objects.get(id=kwargs['project_id'])
+        context['project'] = project = Project.objects.get(id=kwargs['project_id'])
         context['nodes'] = Node.objects.filter(project=project)
         return context
 
@@ -122,7 +142,28 @@ class EdgeCreateView(CreateView):
         return super(EdgeCreateView, self).get_context_data(**kwargs)
 
     def get_success_url(self):
+        print self.kwargs
         return reverse_lazy('edge_table', kwargs=self.kwargs)
+
+
+class EdgeDeleteView(View):
+    """
+    Delete a list of edges.
+
+    """
+    def post(self, request, project_id):
+        project = Project.objects.get(id=project_id)
+
+        if project.owner <> request.user:
+                raise PermissionDenied()
+
+        edges = Edge.objects.filter(id__in=request.POST.getlist('edge_id'))
+        num_edges = len(edges)
+        if num_edges > 0:
+            edges.delete()
+            messages.info(self.request, '{} {} deleted'.format(num_edges, project.edge_description))
+
+        return redirect('edit_data', project_id=project_id)
 
 
 class EdgeTableView(TemplateView):
@@ -134,7 +175,7 @@ class EdgeTableView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(EdgeTableView, self).get_context_data(**kwargs)
-        project = Project.objects.get(id=kwargs['project_id'])
+        context['project'] = project = Project.objects.get(id=kwargs['project_id'])
         context['edges'] = Edge.objects.filter(project=project)
         return context
 

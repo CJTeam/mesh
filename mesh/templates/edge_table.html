@@ -1,20 +1,46 @@
 {% if edges|length_is:'0'%}
 <p>There are no {{ project.edge_description }} in this project.</p>
 {% else %}
-<table class="table table-striped">
-    <thead>
-        <th style="width: 100px">Type</th>
-        <th style="width: 300px">{{ project.node_description }}</th>
-        <th>Description</th>
-    </thead>
-    <tbody>
-        {% for edge in edges %}
-            <tr>
-                <td>{{ edge.get_type_display }}</td>
-                <td>{{ edge }}</td>
-                <td>{{ edge.description }}</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+
+{% if project.owner == user %}
+<form id="edge-delete-form" action="{% url 'edge_delete' project_id %}" method="POST">
+    {% csrf_token %}
+    <button onclick="$('#modal-delete-edges').modal('show'); return false;" class="btn btn-danger pull-right">Delete Selected <i class="icon-remove icon-white"></i></button>
+    <div id="modal-delete-edges" class="modal hide fade">
+        <div class="modal-header">
+          <h3>Delete {{ project.edge_description }}</h3>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure?</p>
+        </div>
+        <div class="modal-footer">
+            <a href="javascript:$('#modal-delete-edges').modal('hide')" class="btn secondary">No</a>
+            <input onclick="$('#edge-delete-form').submit();" type="button" class="btn btn-danger" value="Yes"/>
+        </div>
+    </div>
+{% endif %}
+
+    <table class="table table-striped">
+        <thead>
+            <th style="width: 100px">Type</th>
+            <th style="width: 300px">{{ project.node_description }}</th>
+            <th>Description</th>
+            <th style="width:50px">&nbsp;</th>
+        </thead>
+        <tbody>
+            {% for edge in edges %}
+                <tr>
+                    <td>{{ edge.get_type_display }}</td>
+                    <td>{{ edge }}</td>
+                    <td>{{ edge.description }}</td>
+                    <td>{% if project.owner == user %}<input type="checkbox" name="edge_id" value="{{ edge.id }}">{% endif %}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% if project.owner == user %}
+</form>
+{% endif %}
+
 {% endif %}

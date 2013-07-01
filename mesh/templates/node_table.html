@@ -1,18 +1,44 @@
 {% if nodes|length_is:'0'%}
 <p>There are no {{ project.node_description }} in this project.</p>
 {% else %}
-<table class="table table-striped">
-    <thead>
-        <th style="width: 300px">Name</th>
-        <th>Description</th>
-    </thead>
-    <tbody>
-        {% for node in nodes %}
-            <tr>
-                <td>{{ node.name }}</td>
-                <td>{{ node.description }}</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+
+{% if project.owner == user %}
+<form id="node-delete-form" action="{% url 'node_delete' project_id %}" method="POST">
+    {% csrf_token %}
+    <button onclick="$('#modal-delete-nodes').modal('show'); return false;" class="btn btn-danger pull-right">Delete Selected <i class="icon-remove icon-white"></i></button>
+    <div id="modal-delete-nodes" class="modal hide fade">
+        <div class="modal-header">
+          <h3>Delete {{ project.node_description }}</h3>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure?</p>
+        </div>
+        <div class="modal-footer">
+            <a href="javascript:$('#modal-delete-nodes').modal('hide')" class="btn secondary">No</a>
+            <input onclick="$('#node-delete-form').submit();" type="button" class="btn btn-danger" value="Yes"/>
+        </div>
+    </div>
+{% endif %}
+
+    <table class="table table-striped">
+        <thead>
+            <th style="width: 300px">Name</th>
+            <th>Description</th>
+            <th style="width:50px">&nbsp;</th>
+        </thead>
+        <tbody>
+            {% for node in nodes %}
+                <tr>
+                    <td>{{ node.name }}</td>
+                    <td>{{ node.description }}</td>
+                    <td>{% if project.owner == user %}<input type="checkbox" name="node_id" value="{{ node.id }}">{% endif %}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% if project.owner == user %}
+</form>
+{% endif %}
+
 {% endif %}

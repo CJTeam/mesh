@@ -15,12 +15,16 @@ urlpatterns = patterns('',
     url(r'^$', HomeView.as_view(), name="home" ),
 
     url(r'^browse_projects/$', BrowseProjectsView.as_view(), name='browse_projects'),
+
+
     url(r'^project/$', ProjectCreateView.as_view(), name='project_create'),
     url(r'^project/(?P<project_id>.*)/node_table/$', login_required(NodeTableView.as_view()), name='node_table'),
     url(r'^project/(?P<project_id>.*)/edge_table/$', login_required(EdgeTableView.as_view()), name='edge_table'),
     url(r'^project/(?P<project_id>.*)/edit_data/$', login_required(EditDataView.as_view()), name='edit_data'),
     url(r'^project/(?P<project_id>.*)/node/create$', login_required(NodeCreateView.as_view()), name='node_create'),
+    url(r'^project/(?P<project_id>.*)/node/delete$', login_required(NodeDeleteView.as_view()), name='node_delete'),
     url(r'^project/(?P<project_id>.*)/edge/create$', login_required(EdgeCreateView.as_view()), name='edge_create'),
+    url(r'^project/(?P<project_id>.*)/edge/delete$', login_required(EdgeDeleteView.as_view()), name='edge_delete'),
     url(r'^project/(?P<project_id>.*)/collaborators/$', ProjectCollaboratorsView.as_view(), name='project_collaborators'),
     url(r'^project/(?P<project_id>.*)/csv/$', ProjectCsvView.as_view(), name='project_csv'),
     url(r'^project/(?P<project_id>.*)/deactivate/$', DeactivateProjectView.as_view(), name='deactivate_project'),
