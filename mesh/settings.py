@@ -1,10 +1,28 @@
 import os
 
-# Django settings for mesh project.
-
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
-HEROKU = True
+
+# check if we are deployed on heroku
+if os.environ.get('MESH_HEROKU', False):
+    # we are using a production machine
+    import dj_database_url
+    DATABASES = {'default' : dj_database_url.config()}
+    HEROKU = True
+else:
+    # we are using development machine
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+            'NAME': '../mesh/db',                      # Or path to database file if using sqlite3.
+            # The following settings are not used with sqlite3:
+            'USER': '',
+            'PASSWORD': '',
+            'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+            'PORT': '',                      # Set to empty string for default.
+        }
+    }
+
 
 PROJECT_DIR = os.path.dirname(__file__)
 
@@ -21,11 +39,6 @@ ACCOUNT_ACTIVATION_DAYS = 7
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-
-DATABASES = {}
-# Parse database configuration from $DATABASE_URL
-import dj_database_url
-DATABASES['default'] =  dj_database_url.config()
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
