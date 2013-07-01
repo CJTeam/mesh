@@ -43,15 +43,15 @@
 {% endif %}
 
 <script type="application/javascript">
-        $('#nodes-table').dataTable({
-            aoColumnDefs: [
-                {
-                   bSortable: false,
-                   aTargets: [ -1 ]
-                }
-            ],
-            bPaginate: false
-        }).fnSort([[0, 'desc']]);
+    $('#nodes-table').dataTable({
+        aoColumnDefs: [
+            {
+               bSortable: false,
+               aTargets: [ -1 ]
+            }
+        ],
+        bPaginate: false
+    }).fnSort([[0, 'desc']]);
 </script>
 
 {% endif %}

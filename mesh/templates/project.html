@@ -18,7 +18,7 @@
         <div class="span8">
 
             {% if not project or project.owner == user %}
-            <form id="project-details-form" method="post" action="" class="wide form-horizontal">
+            <form id="project-details-form" method="post" action="" class="wide form-horizontal" enctype="multipart/form-data">
                 {% csrf_token %}
 
                 {% if project %}
@@ -51,6 +51,13 @@
                             {% for c in project.collaborators.all %} {{ c.first_name }} {{ c.last_name }} <br/> {% endfor %}
                         </div>
                     </div>
+                    {% else %}
+                        <div class="control-group">
+                                <label for="init-file" class="control-label">Gexf Source File</label>
+                                <div class="controls">
+                                    <input type="file" name="source_file" id="source-file">
+                                </div>
+                            </div>
                     {% endif %}
                     <div class="control-group">
                         <div class="controls">

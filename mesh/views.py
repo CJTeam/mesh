@@ -16,6 +16,8 @@ from registration import signals
 from registration.backends.default.views import RegistrationView
 from registration.models import RegistrationProfile
 
+from lxml.etree import XMLSyntaxError
+
 from mesh.forms import ProfileForm, ProjectForm, UserRegistrationForm, EdgeForm, NodeForm
 from mesh.models import Project, Edge, Node
 from mesh import util
@@ -291,6 +293,13 @@ class ProjectCreateView(FormView):
         project.node_description = data['node_description']
         project.edge_description = data['edge_description']
         project.save()
+
+        if 'source_file' in self.request.FILES.keys():
+            source_file = self.request.FILES['source_file']
+            try:
+                util.import_gefx(source_file, project)
+            except XMLSyntaxError:
+                pass
 
         messages.info(self.request, 'New project {} created'.format(project.name))
         return redirect('project_update', project_id=project.id)
