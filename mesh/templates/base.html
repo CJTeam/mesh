@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
         <link href="{{ STATIC_URL }}css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link href="{{ STATIC_URL }}css/jquery.dataTables.css" rel="stylesheet">
         <link href="{{ STATIC_URL }}css/base.css" rel="stylesheet">
         <!--[if lt IE 9]>
         <script src="{{ STATIC_URL }}js/html5shiv.js"></script>
@@ -17,6 +18,8 @@
         <link rel="apple-touch-icon-precomposed" href="{{ STATIC_URL }}img/ico/favicon.ico">
         {% block link %}{% endblock %}
         {% block script %}{% endblock %}
+        <script src="{{ STATIC_URL }}js/jquery-1.9.1.min.js"></script>
+        <script src="{{ STATIC_URL }}js/jquery.dataTables.min.js"></script>
     </head>
     <body class="{% block body_class %}{% endblock %}">
         <div class="container">
@@ -44,8 +47,7 @@
             {% block  body_content %}{% endblock %}
         </div>
 
-        <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/jquery-1.9.1.min.js"><\/script>')</script>
-            <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+        <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
 {% block extra_script %}{% endblock %}
     </body>
 </html>
