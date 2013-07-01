@@ -110,6 +110,20 @@ class NodeDeleteView(View):
         return redirect('edit_data', project_id=project_id)
 
 
+class NodeOptionsView(TemplateView):
+    """
+    HTML fragment for project node options.
+
+    """
+    template_name = 'node_options.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(NodeOptionsView, self).get_context_data(**kwargs)
+        context['project'] = project = Project.objects.get(id=kwargs['project_id'])
+        context['nodes'] = Node.objects.filter(project=project)
+        return context
+
+
 class NodeTableView(TemplateView):
     """
     HTML fragment for project node table.
