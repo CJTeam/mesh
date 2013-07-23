@@ -24,7 +24,7 @@
                 </div>
                 <div class="row-fluid">
                 {% endif %}
-                    <div onclick="window.location = '{% url 'project_update' p.id %}';" class="span4 well project-box" style="height: 100px">
+                    <div onclick="window.location = '{% url 'project_update' p.id %}';" class="span4 well project-box">
                         <p class="project-name">{{ p.name }}</p>
                         <p class="project-description">{{ p.description }}</p>
                         <br/>

@@ -49,13 +49,13 @@
                             <label for="input-type" class="control-label">Type</label>
                             <div class="controls">
                                 <select name="type" onchange="updateLabels(this);" id="input-type">
-                                    <option value="1">Undirected</option>
-                                    <option value="2" selected="selected">Directed</option>
+                                    <option value="1" selected="selected">Undirected</option>
+                                    <option value="2">Directed</option>
                                 </select>
                             </div>
                         </div>
                         <div class="control-group">
-                            <label id="from-label" for="input-from" class="control-label">From</label>
+                            <label id="from-label" for="input-from" class="control-label">Between</label>
                             <div class="controls">
                                 <select id="input-from" name="from_node">
                                     {% include 'node_options.html' %}
@@ -63,7 +63,7 @@
                             </div>
                         </div>
                         <div class="control-group">
-                            <label id="to-label" for="input-to" class="control-label">To</label>
+                            <label id="to-label" for="input-to" class="control-label">And</label>
                             <div class="controls">
                                 <select id="input-to" name="to_node">
                                     {% include 'node_options.html' %}

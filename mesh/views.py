@@ -158,7 +158,6 @@ class EdgeCreateView(CreateView):
         return super(EdgeCreateView, self).get_context_data(**kwargs)
 
     def get_success_url(self):
-        print self.kwargs
         return reverse_lazy('edge_table', kwargs=self.kwargs)
 
 

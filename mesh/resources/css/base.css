@@ -32,7 +32,7 @@ form .required .controls:after {
 .project-box {
     background-color: #A3B6A3;
     cursor: pointer;
-    height: 200px !important;
+    height: 160px !important;
     opacity: 0.8;
 }
 .project-box-collaborator {
@@ -46,6 +46,7 @@ form .required .controls:after {
     font-weight: bold;
 }
 .project-box .project-description {
+    height: 55px;
     padding-left: 20px;
 }
 

@@ -8,7 +8,7 @@
     <div class="row-fluid" id="graph-row">
         <button type="button" onclick="window.location = '{% url 'project_update' project.id %}';" class="btn">Back</button>
         <br/><br/>
-        <div style="height: 650px; width: 850px; background-color: black; padding: 25px;">
+        <div>
             <div id="graph" style="height: 600px; width: 800px; background-color: black;"></div>
         </div>
         <br/><br/>
@@ -62,6 +62,7 @@
 
         for (i = 0; i < GRAPH_DATA.edges.length; i++) {
             e = GRAPH_DATA.edges[i];
+            console.log(e);
             sigInst.addEdge(e.id, e.sourceNode, e.targetNode);
         }
 
